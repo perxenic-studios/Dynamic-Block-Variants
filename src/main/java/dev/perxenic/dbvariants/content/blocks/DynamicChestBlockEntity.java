@@ -1,6 +1,6 @@
 package dev.perxenic.dbvariants.content.blocks;
 
-import dev.perxenic.dbvariants.registry.ModBlockEntities;
+import dev.perxenic.dbvariants.registry.DBVBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +18,7 @@ public class DynamicChestBlockEntity extends ChestBlockEntity {
     public ResourceLocation dynamicMaterial;
 
     public DynamicChestBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.DYNAMIC_CHEST.get(), pos, state);
+        super(DBVBlockEntities.DYNAMIC_CHEST.get(), pos, state);
     }
 
     @Override

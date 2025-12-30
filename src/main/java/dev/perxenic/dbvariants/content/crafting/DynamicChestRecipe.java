@@ -1,9 +1,9 @@
 package dev.perxenic.dbvariants.content.crafting;
 
 import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
-import dev.perxenic.dbvariants.registry.ModBlockEntities;
-import dev.perxenic.dbvariants.registry.ModItems;
-import dev.perxenic.dbvariants.registry.ModRecipeSerializers;
+import dev.perxenic.dbvariants.registry.DBVBlockEntities;
+import dev.perxenic.dbvariants.registry.DBVItems;
+import dev.perxenic.dbvariants.registry.DBVRecipeSerializers;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
@@ -58,13 +58,13 @@ public class DynamicChestRecipe extends CustomRecipe {
 
     @Override
     public @NotNull ItemStack assemble(@NotNull CraftingInput craftingInput, HolderLookup.@NotNull Provider provider) {
-        ItemStack itemStack = ModItems.DYNAMIC_CHEST.toStack();
+        ItemStack itemStack = DBVItems.DYNAMIC_CHEST.toStack();
 
         Optional<ItemStack> ingredient = craftingInput.items().stream().filter(filter -> !filter.isEmpty()).findFirst();
         if (ingredient.isEmpty()) return ItemStack.EMPTY;
 
         CompoundTag compoundTag = new CompoundTag();
-        compoundTag.putString("id", ModBlockEntities.DYNAMIC_CHEST.getKey().location().toString());
+        compoundTag.putString("id", DBVBlockEntities.DYNAMIC_CHEST.getKey().location().toString());
         compoundTag.putString(DynamicChestBlockEntity.MATERIAL_TAG, ingredient.get().getItem().toString());
 
         itemStack.applyComponents(
@@ -80,6 +80,6 @@ public class DynamicChestRecipe extends CustomRecipe {
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return ModRecipeSerializers.DYNAMIC_CHEST_RECIPE.get();
+        return DBVRecipeSerializers.DYNAMIC_CHEST_RECIPE.get();
     }
 }

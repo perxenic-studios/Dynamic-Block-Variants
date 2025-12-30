@@ -10,7 +10,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class ModBlocks {
+public class DBVBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(DBVariants.MODID);
 
     public static final DeferredBlock<DynamicChest> DYNAMIC_CHEST = BLOCKS.register("dynamic_chest", () -> new DynamicChest(
@@ -20,7 +20,7 @@ public class ModBlocks {
                     .strength(2.5F)
                     .sound(SoundType.WOOD)
                     .ignitedByLava(),
-            ModBlockEntities.DYNAMIC_CHEST::get
+            DBVBlockEntities.DYNAMIC_CHEST::get
     ));
 
     public static void register(IEventBus eventBus) {

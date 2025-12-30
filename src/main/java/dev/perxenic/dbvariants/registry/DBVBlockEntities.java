@@ -12,23 +12,21 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.function.Supplier;
-
 @EventBusSubscriber
-public class ModBlockEntities {
+public class DBVBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, DBVariants.MODID);
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DynamicChestBlockEntity>> DYNAMIC_CHEST =
             BLOCK_ENTITY_TYPES.register("dynamic_chest", () -> BlockEntityType.Builder.of(
                     DynamicChestBlockEntity::new,
-                    ModBlocks.DYNAMIC_CHEST.get()
+                    DBVBlocks.DYNAMIC_CHEST.get()
             ).build(null));
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(
-                ModBlockEntities.DYNAMIC_CHEST.get(),
+                DBVBlockEntities.DYNAMIC_CHEST.get(),
                 DynamicChestBER::new
         );
     }

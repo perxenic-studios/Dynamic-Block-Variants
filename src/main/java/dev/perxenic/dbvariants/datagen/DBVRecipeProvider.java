@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
-    public ModRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+public class DBVRecipeProvider extends RecipeProvider implements IConditionBuilder {
+    public DBVRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
     }
 

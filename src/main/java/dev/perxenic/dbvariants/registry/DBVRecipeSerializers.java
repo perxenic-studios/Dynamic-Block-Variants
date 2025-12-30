@@ -10,7 +10,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-public class ModRecipeSerializers {
+public class DBVRecipeSerializers {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
             DeferredRegister.create(Registries.RECIPE_SERIALIZER, DBVariants.MODID);
 

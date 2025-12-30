@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-public class ModRecipeTypes {
+public class DBVRecipeTypes {
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES =
             DeferredRegister.create(Registries.RECIPE_TYPE, DBVariants.MODID);
 

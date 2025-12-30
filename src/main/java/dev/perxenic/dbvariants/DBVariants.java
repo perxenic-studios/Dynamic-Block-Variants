@@ -1,9 +1,9 @@
 package dev.perxenic.dbvariants;
 
-import dev.perxenic.dbvariants.registry.ModBlockEntities;
-import dev.perxenic.dbvariants.registry.ModBlocks;
-import dev.perxenic.dbvariants.registry.ModItems;
-import dev.perxenic.dbvariants.registry.ModRecipeSerializers;
+import dev.perxenic.dbvariants.registry.DBVBlockEntities;
+import dev.perxenic.dbvariants.registry.DBVBlocks;
+import dev.perxenic.dbvariants.registry.DBVItems;
+import dev.perxenic.dbvariants.registry.DBVRecipeSerializers;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -19,10 +19,10 @@ public class DBVariants {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public DBVariants(IEventBus modEventBus, ModContainer modContainer) {
-        ModBlockEntities.register(modEventBus);
-        ModBlocks.register(modEventBus);
-        ModItems.register(modEventBus);
-        ModRecipeSerializers.register(modEventBus);
+        DBVBlockEntities.register(modEventBus);
+        DBVBlocks.register(modEventBus);
+        DBVItems.register(modEventBus);
+        DBVRecipeSerializers.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

@@ -11,7 +11,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber
-public class DataGenerators {
+public class DBVDataGenerators {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
@@ -19,6 +19,6 @@ public class DataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new DBVRecipeProvider(packOutput, lookupProvider));
     }
 }
