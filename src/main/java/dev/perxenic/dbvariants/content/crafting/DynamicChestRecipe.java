@@ -36,15 +36,17 @@ public class DynamicChestRecipe extends CustomRecipe {
         int startY = -1;
         for (ItemStack itemStack : input.items()) {
             index++;
+            // Continue searching until first non-empty item found
             if (itemStack.isEmpty()) continue;
-            // If not a plank, recipe invalid
+            // If not a chest material, recipe invalid
             if (!itemStack.is(DBVItemTags.CHEST_MATERIAL)) return false;
             startX = index % input.width();
             startY = index / input.width();
             break;
         }
         // If starting item is too late for the pattern to match return false
-        if (index + 8 >= input.size()) return false;
+        if (index + input.width() * 2 + 2 >= input.size()) return false;
+        // Check all the slots
         if (input.getItem(startX+1, startY).isEmpty()) return false;
         if (input.getItem(startX+2, startY).isEmpty()) return false;
         if (input.getItem(startX, startY+1).isEmpty()) return false;
