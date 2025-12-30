@@ -5,6 +5,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
@@ -19,6 +20,9 @@ public class DBVDataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
+        BlockTagsProvider blockTagsProvider = new DBVBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
+        generator.addProvider(event.includeServer(), blockTagsProvider);
+        generator.addProvider(event.includeServer(), new DBVItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), new DBVRecipeProvider(packOutput, lookupProvider));
     }
 }

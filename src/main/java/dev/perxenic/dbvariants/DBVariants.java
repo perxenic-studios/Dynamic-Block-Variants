@@ -4,6 +4,7 @@ import dev.perxenic.dbvariants.registry.DBVBlockEntities;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
 import dev.perxenic.dbvariants.registry.DBVItems;
 import dev.perxenic.dbvariants.registry.DBVRecipeSerializers;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -25,5 +26,9 @@ public class DBVariants {
         DBVRecipeSerializers.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+    }
+
+    public static ResourceLocation dbvLoc(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 }
