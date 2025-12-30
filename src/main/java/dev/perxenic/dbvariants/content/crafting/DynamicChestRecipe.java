@@ -4,11 +4,11 @@ import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
 import dev.perxenic.dbvariants.registry.DBVBlockEntities;
 import dev.perxenic.dbvariants.registry.DBVItems;
 import dev.perxenic.dbvariants.registry.DBVRecipeSerializers;
+import dev.perxenic.dbvariants.utils.DBVItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -38,7 +38,7 @@ public class DynamicChestRecipe extends CustomRecipe {
             index++;
             if (itemStack.isEmpty()) continue;
             // If not a plank, recipe invalid
-            if (!itemStack.is(ItemTags.PLANKS)) return false;
+            if (!itemStack.is(DBVItemTags.CHEST_MATERIAL)) return false;
             startX = index % input.width();
             startY = index / input.width();
             break;
