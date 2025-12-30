@@ -24,5 +24,7 @@ public class DBVDataGenerators {
         generator.addProvider(event.includeServer(), blockTagsProvider);
         generator.addProvider(event.includeServer(), new DBVItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), new DBVRecipeProvider(packOutput, lookupProvider));
+
+        DBVChestMaterialProvider.gatherData(event);
     }
 }

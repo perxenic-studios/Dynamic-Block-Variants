@@ -30,4 +30,8 @@ public class DBVariants {
     public static ResourceLocation dbvLoc(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
+
+    public static ResourceLocation mcLoc(String path) {
+        return ResourceLocation.withDefaultNamespace(path);
+    }
 }
