@@ -1,14 +1,19 @@
 package dev.perxenic.dbvariants.content.crafting;
 
+import dev.perxenic.dbvariants.DBVariants;
 import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
+import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
+import dev.perxenic.dbvariants.datagen.DBVDataMapProvider;
 import dev.perxenic.dbvariants.registry.DBVBlockEntities;
 import dev.perxenic.dbvariants.registry.DBVItems;
 import dev.perxenic.dbvariants.registry.DBVRecipeSerializers;
+import dev.perxenic.dbvariants.utils.DBVDataMaps;
 import dev.perxenic.dbvariants.utils.DBVItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -67,7 +72,14 @@ public class DynamicChestRecipe extends CustomRecipe {
 
         CompoundTag compoundTag = new CompoundTag();
         compoundTag.putString("id", DBVBlockEntities.DYNAMIC_CHEST.getKey().location().toString());
-        compoundTag.putString(DynamicChestBlockEntity.MATERIAL_TAG, ingredient.get().getItem().toString());
+
+        ResourceLocation chestMaterial = ingredient.get().getItemHolder().getData(DBVDataMaps.CHEST_MATERIAL);
+        if (chestMaterial == null) {
+            DBVariants.LOGGER.warn("Item {} has no chest material!", ingredient.get().getItem());
+            chestMaterial = DBVChestMaterialProvider.DEFAULT.location();
+        }
+
+        compoundTag.putString(DynamicChestBlockEntity.MATERIAL_TAG, chestMaterial.toString());
 
         itemStack.applyComponents(
                 DataComponentPatch.builder().set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(compoundTag)).build()
