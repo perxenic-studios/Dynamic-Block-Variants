@@ -23,6 +23,10 @@ public class DBVItemTagProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        // Common Tags
+        tag(Tags.Items.CHESTS_WOODEN)
+                .add(DBVItems.DYNAMIC_CHEST.get());
+        // DBV Tags
         tag(DBVItemTags.CHEST_MATERIAL)
                 .addTag(ItemTags.PLANKS);
     }
