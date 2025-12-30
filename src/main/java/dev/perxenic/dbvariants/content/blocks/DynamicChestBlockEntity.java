@@ -14,7 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class DynamicChestBlockEntity extends ChestBlockEntity {
 
-    public ResourceLocation woodType;
+    public static final String MATERIAL_TAG = "dynamic_material";
+    public ResourceLocation dynamicMaterial;
 
     public DynamicChestBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.DYNAMIC_CHEST.get(), pos, state);
@@ -24,14 +25,14 @@ public class DynamicChestBlockEntity extends ChestBlockEntity {
     public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
 
-        if (tag.contains("wood_type")) this.woodType = ResourceLocation.parse(tag.getString("wood_type"));
-        else woodType = ResourceLocation.withDefaultNamespace("oak_planks");
+        if (tag.contains(MATERIAL_TAG)) this.dynamicMaterial = ResourceLocation.parse(tag.getString(MATERIAL_TAG));
+        else dynamicMaterial = ResourceLocation.withDefaultNamespace("oak_planks");
     }
 
     @Override
     public void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        if (woodType != null) tag.putString("wood_type", this.woodType.toString());
+        if (dynamicMaterial != null) tag.putString(MATERIAL_TAG, this.dynamicMaterial.toString());
     }
 
     @Override

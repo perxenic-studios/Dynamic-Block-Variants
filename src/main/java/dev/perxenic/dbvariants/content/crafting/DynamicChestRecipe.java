@@ -1,6 +1,6 @@
 package dev.perxenic.dbvariants.content.crafting;
 
-import dev.perxenic.dbvariants.DBVariants;
+import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
 import dev.perxenic.dbvariants.registry.ModBlockEntities;
 import dev.perxenic.dbvariants.registry.ModItems;
 import dev.perxenic.dbvariants.registry.ModRecipeSerializers;
@@ -65,7 +65,7 @@ public class DynamicChestRecipe extends CustomRecipe {
 
         CompoundTag compoundTag = new CompoundTag();
         compoundTag.putString("id", ModBlockEntities.DYNAMIC_CHEST.getKey().location().toString());
-        compoundTag.putString("wood_type", ingredient.get().getItem().toString());
+        compoundTag.putString(DynamicChestBlockEntity.MATERIAL_TAG, ingredient.get().getItem().toString());
 
         itemStack.applyComponents(
                 DataComponentPatch.builder().set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(compoundTag)).build()
