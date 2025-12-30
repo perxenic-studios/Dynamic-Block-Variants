@@ -1,9 +1,6 @@
 package dev.perxenic.dbvariants;
 
-import dev.perxenic.dbvariants.registry.DBVBlockEntities;
-import dev.perxenic.dbvariants.registry.DBVBlocks;
-import dev.perxenic.dbvariants.registry.DBVItems;
-import dev.perxenic.dbvariants.registry.DBVRecipeSerializers;
+import dev.perxenic.dbvariants.registry.*;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
@@ -22,6 +19,7 @@ public class DBVariants {
     public DBVariants(IEventBus modEventBus, ModContainer modContainer) {
         DBVBlockEntities.register(modEventBus);
         DBVBlocks.register(modEventBus);
+        DBVConditionCodecs.register(modEventBus);
         DBVItems.register(modEventBus);
         DBVRecipeSerializers.register(modEventBus);
 
