@@ -19,6 +19,7 @@ public class DBVariants {
     public DBVariants(IEventBus modEventBus, ModContainer modContainer) {
         DBVBlockEntities.register(modEventBus);
         DBVBlocks.register(modEventBus);
+        DBVChestMaterialTypes.register(modEventBus);
         DBVConditionCodecs.register(modEventBus);
         DBVItems.register(modEventBus);
         DBVRecipeSerializers.register(modEventBus);

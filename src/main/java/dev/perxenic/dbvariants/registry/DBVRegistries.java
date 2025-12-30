@@ -2,7 +2,7 @@ package dev.perxenic.dbvariants.registry;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import dev.perxenic.dbvariants.content.chestMaterials.ChestMaterial;
+import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -20,14 +20,14 @@ public class DBVRegistries {
     public static final ResourceKey<Registry<MapCodec<? extends ChestMaterial>>> CHEST_MATERIAL_TYPE_REGISTRY_KEY = ResourceKey.createRegistryKey(dbvLoc("chest_material_type"));
     public static final Registry<MapCodec<? extends ChestMaterial>> CHEST_MATERIAL_TYPE_REGISTRY = new RegistryBuilder<>(CHEST_MATERIAL_TYPE_REGISTRY_KEY)
             .sync(true)
-            .defaultKey(dbvLoc("basic"))
+            .defaultKey(dbvLoc("vanilla"))
             .create();
 
     public static final ResourceKey<Registry<ChestMaterial>> CHEST_MATERIAL_REGISTRY_KEY =
             ResourceKey.createRegistryKey(dbvLoc("chest_material"));
 
     public static final Codec<ChestMaterial> CHEST_MATERIAL_CODEC = CHEST_MATERIAL_TYPE_REGISTRY.byNameCodec().dispatch(
-        ChestMaterial::type, Function.identity()
+        ChestMaterial::codec, Function.identity()
     );
 
     @SubscribeEvent
