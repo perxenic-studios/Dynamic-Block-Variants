@@ -39,7 +39,7 @@ public class DBVChestMaterialProvider {
     public static ResourceKey<ChestMaterial> chestMaterialKey(String path) {
         return ResourceKey.create(
                 DBVRegistries.CHEST_MATERIAL_REGISTRY_KEY,
-                dbvLoc("example_configured_feature")
+                dbvLoc(path)
         );
     }
 }
