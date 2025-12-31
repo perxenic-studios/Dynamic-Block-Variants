@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
 import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
+import dev.perxenic.dbvariants.registry.DBVBlocks;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -57,41 +58,40 @@ public class DynamicChestBER implements BlockEntityRenderer<DynamicChestBlockEnt
         ChestMaterial dynamicMaterial = blockEntity.dynamicMaterial == null ? DBVChestMaterialProvider.DEFAULT : blockEntity.dynamicMaterial.value();
 
         Level level = blockEntity.getLevel();
-        boolean flag = level != null;
-        BlockState blockstate = flag ? blockEntity.getBlockState() : Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH);
-        ChestType chesttype = blockstate.hasProperty(ChestBlock.TYPE) ? blockstate.getValue(ChestBlock.TYPE) : ChestType.SINGLE;
-        if (blockstate.getBlock() instanceof AbstractChestBlock<?> abstractchestblock) {
-            boolean flag1 = chesttype != ChestType.SINGLE;
-            stack.pushPose();
-            float f = blockstate.getValue(ChestBlock.FACING).toYRot();
-            stack.translate(0.5F, 0.5F, 0.5F);
-            stack.mulPose(Axis.YP.rotationDegrees(-f));
-            stack.translate(-0.5F, -0.5F, -0.5F);
-            DoubleBlockCombiner.NeighborCombineResult<? extends ChestBlockEntity> neighborcombineresult;
-            if (flag) {
-                neighborcombineresult = abstractchestblock.combine(blockstate, level, blockEntity.getBlockPos(), true);
-            } else {
-                neighborcombineresult = DoubleBlockCombiner.Combiner::acceptNone;
-            }
+        boolean levelPresent = level != null;
 
-            float f1 = neighborcombineresult.apply(ChestBlock.opennessCombiner(blockEntity)).get(partialTick);
-            f1 = 1.0F - f1;
-            f1 = 1.0F - f1 * f1 * f1;
-            int i = neighborcombineresult.apply(new BrightnessCombiner<>()).applyAsInt(packedLight);
-            Material material = getMaterial(dynamicMaterial, chesttype);
-            VertexConsumer vertexconsumer = material.buffer(bufferSource, RenderType::entityCutout);
-            if (flag1) {
-                if (chesttype == ChestType.LEFT) {
-                    render(stack, vertexconsumer, this.doubleLeftLid, this.doubleLeftLock, this.doubleLeftBottom, f1, i, packedOverlay);
-                } else {
-                    render(stack, vertexconsumer, this.doubleRightLid, this.doubleRightLock, this.doubleRightBottom, f1, i, packedOverlay);
-                }
-            } else {
-                render(stack, vertexconsumer, this.lid, this.lock, this.bottom, f1, i, packedOverlay);
-            }
+        BlockState blockstate = levelPresent ? blockEntity.getBlockState() : DBVBlocks.DYNAMIC_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH);
+        ChestType chestType = blockstate.hasProperty(ChestBlock.TYPE) ? blockstate.getValue(ChestBlock.TYPE) : ChestType.SINGLE;
 
-            stack.popPose();
+        if (!(blockstate.getBlock() instanceof AbstractChestBlock<?> abstractchestblock)) return;
+
+        stack.pushPose();
+
+        float yRot = blockstate.getValue(ChestBlock.FACING).toYRot();
+        stack.translate(0.5F, 0.5F, 0.5F);
+        stack.mulPose(Axis.YP.rotationDegrees(-yRot));
+        stack.translate(-0.5F, -0.5F, -0.5F);
+
+        DoubleBlockCombiner.NeighborCombineResult<? extends ChestBlockEntity> neighborcombineresult;
+        if (levelPresent) {
+            neighborcombineresult = abstractchestblock.combine(blockstate, level, blockEntity.getBlockPos(), true);
+        } else {
+            neighborcombineresult = DoubleBlockCombiner.Combiner::acceptNone;
         }
+
+        float lidAngle = 1.0F - neighborcombineresult.apply(ChestBlock.opennessCombiner(blockEntity)).get(partialTick);
+        lidAngle = 1.0F - lidAngle * lidAngle * lidAngle;
+        int i = neighborcombineresult.apply(new BrightnessCombiner<>()).applyAsInt(packedLight);
+        Material material = getMaterial(dynamicMaterial, chestType);
+        VertexConsumer vertexconsumer = material.buffer(bufferSource, RenderType::entityCutout);
+
+        switch (chestType) {
+            case SINGLE -> render(stack, vertexconsumer, this.lid, this.lock, this.bottom, lidAngle, i, packedOverlay);
+            case LEFT -> render(stack, vertexconsumer, this.doubleLeftLid, this.doubleLeftLock, this.doubleLeftBottom, lidAngle, i, packedOverlay);
+            case RIGHT -> render(stack, vertexconsumer, this.doubleRightLid, this.doubleRightLock, this.doubleRightBottom, lidAngle, i, packedOverlay);
+        }
+
+        stack.popPose();
     }
 
     private void render(
