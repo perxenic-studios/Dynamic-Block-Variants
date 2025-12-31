@@ -16,7 +16,8 @@ import static dev.perxenic.dbvariants.DBVariants.dbvLoc;
 
 public class DBVChestMaterialProvider {
 
-    public static final ResourceKey<ChestMaterial> DEFAULT = chestMaterialKey("default");
+    public static final ResourceKey<ChestMaterial> DEFAULT_KEY = chestMaterialKey("default");
+    public static final ChestMaterial DEFAULT = new VanillaChest("normal");
 
     public static void gatherData(GatherDataEvent event) {
         event.getGenerator().addProvider(
@@ -27,8 +28,8 @@ public class DBVChestMaterialProvider {
                         new RegistrySetBuilder()
                                 .add(DBVRegistries.CHEST_MATERIAL_REGISTRY_KEY, bootstrap -> {
                                     bootstrap.register(
-                                            DEFAULT,
-                                            new VanillaChest("default")
+                                            DEFAULT_KEY,
+                                            DEFAULT
                                     );
                                 }),
                         Set.of(MODID)

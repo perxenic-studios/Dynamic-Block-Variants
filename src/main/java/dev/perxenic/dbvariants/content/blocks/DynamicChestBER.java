@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
+import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -53,8 +54,7 @@ public class DynamicChestBER implements BlockEntityRenderer<DynamicChestBlockEnt
     @Override
     public void render(@NotNull DynamicChestBlockEntity blockEntity, float partialTick, @NotNull PoseStack stack,
                        @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        //TODO: Implement fallback
-        if (blockEntity.dynamicMaterial == null) return;
+        ChestMaterial dynamicMaterial = blockEntity.dynamicMaterial == null ? DBVChestMaterialProvider.DEFAULT : blockEntity.dynamicMaterial.value();
 
         Level level = blockEntity.getLevel();
         boolean flag = level != null;
@@ -78,7 +78,7 @@ public class DynamicChestBER implements BlockEntityRenderer<DynamicChestBlockEnt
             f1 = 1.0F - f1;
             f1 = 1.0F - f1 * f1 * f1;
             int i = neighborcombineresult.apply(new BrightnessCombiner<>()).applyAsInt(packedLight);
-            Material material = getMaterial(blockEntity.dynamicMaterial, chesttype);
+            Material material = getMaterial(dynamicMaterial, chesttype);
             VertexConsumer vertexconsumer = material.buffer(bufferSource, RenderType::entityCutout);
             if (flag1) {
                 if (chesttype == ChestType.LEFT) {
@@ -111,11 +111,11 @@ public class DynamicChestBER implements BlockEntityRenderer<DynamicChestBlockEnt
         bottomPart.render(poseStack, consumer, packedLight, packedOverlay);
     }
 
-    protected Material getMaterial(Holder<ChestMaterial> material, ChestType chestType) {
+    protected Material getMaterial(ChestMaterial material, ChestType chestType) {
         return switch (chestType) {
-            case SINGLE -> material.value().getMainMaterial();
-            case LEFT -> material.value().getLeftMaterial();
-            case RIGHT -> material.value().getRightMaterial();
+            case SINGLE -> material.getMainMaterial();
+            case LEFT -> material.getLeftMaterial();
+            case RIGHT -> material.getRightMaterial();
         };
     }
 }

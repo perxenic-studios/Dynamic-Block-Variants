@@ -76,7 +76,7 @@ public class DynamicChestRecipe extends CustomRecipe {
         ResourceLocation chestMaterial = ingredient.get().getItemHolder().getData(DBVDataMaps.CHEST_MATERIAL);
         if (chestMaterial == null) {
             DBVariants.LOGGER.warn("Item {} has no chest material!", ingredient.get().getItem());
-            chestMaterial = DBVChestMaterialProvider.DEFAULT.location();
+            chestMaterial = DBVChestMaterialProvider.DEFAULT_KEY.location();
         }
 
         compoundTag.putString(DynamicChestBlockEntity.MATERIAL_TAG, chestMaterial.toString());
