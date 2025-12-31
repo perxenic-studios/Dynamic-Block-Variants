@@ -16,10 +16,17 @@ public class VanillaChest extends ChestMaterial{
 
     public static final ResourceLocation CHEST_SHEET = ResourceLocation.withDefaultNamespace("textures/atlas/chest.png");
 
+    public static Material mainMaterial;
+    public static Material leftMaterial;
+    public static Material rightMaterial;
+
     public final String chestName;
 
     public VanillaChest(String chestName) {
         this.chestName = chestName;
+        mainMaterial = new Material(CHEST_SHEET, mcLoc("entity/chest/" + chestName));
+        leftMaterial = new Material(CHEST_SHEET, mcLoc("entity/chest/" + chestName + "_left"));
+        rightMaterial = new Material(CHEST_SHEET, mcLoc("entity/chest/" + chestName + "_right"));
     }
 
     @Override
@@ -28,17 +35,17 @@ public class VanillaChest extends ChestMaterial{
     }
 
     @Override
-    public Material getMaterial() {
-        return new Material(CHEST_SHEET, mcLoc("entity/chest/" + chestName));
+    public Material getMainMaterial() {
+        return mainMaterial;
     }
 
     @Override
     public Material getLeftMaterial() {
-        return new Material(CHEST_SHEET, mcLoc("entity/chest/" + chestName + "_left"));
+        return leftMaterial;
     }
 
     @Override
     public Material getRightMaterial() {
-        return new Material(CHEST_SHEET, mcLoc("entity/chest/" + chestName + "_right"));
+        return rightMaterial;
     }
 }

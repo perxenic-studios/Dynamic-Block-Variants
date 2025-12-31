@@ -3,25 +3,17 @@ package dev.perxenic.dbvariants.content.blocks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import dev.perxenic.dbvariants.DBVariants;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BrightnessCombiner;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -121,7 +113,7 @@ public class DynamicChestBER implements BlockEntityRenderer<DynamicChestBlockEnt
 
     protected Material getMaterial(Holder<ChestMaterial> material, ChestType chestType) {
         return switch (chestType) {
-            case SINGLE -> material.value().getMaterial();
+            case SINGLE -> material.value().getMainMaterial();
             case LEFT -> material.value().getLeftMaterial();
             case RIGHT -> material.value().getRightMaterial();
         };
