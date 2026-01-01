@@ -1,0 +1,66 @@
+package dev.perxenic.dbvariants.content.crafting;
+
+import dev.perxenic.dbvariants.registry.DBVItems;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class DynamicChestRecipeBuilder implements RecipeBuilder {
+    protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
+    @Nullable
+    protected String group;
+
+    protected final CraftingBookCategory category;
+    protected final Ingredient ingredient;
+    protected final ResourceLocation material;
+
+    public DynamicChestRecipeBuilder(CraftingBookCategory category, Ingredient ingredient, ResourceLocation material) {
+        this.category = category;
+        this.ingredient = ingredient;
+        this.material = material;
+    }
+
+    @Override
+    public @NotNull RecipeBuilder unlockedBy(@NotNull String name, @NotNull Criterion<?> criterion) {
+        this.criteria.put(name, criterion);
+        return this;
+    }
+
+    @Override
+    public @NotNull RecipeBuilder group(@Nullable String group) {
+        this.group = group;
+        return this;
+    }
+
+    @Override
+    public @NotNull Item getResult() {
+        return DBVItems.DYNAMIC_CHEST.get();
+    }
+
+    @Override
+    public void save(@NotNull RecipeOutput output, @NotNull ResourceLocation location) {
+        Advancement.Builder advancement = output.advancement()
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(location))
+                .rewards(AdvancementRewards.Builder.recipe(location))
+                .requirements(AdvancementRequirements.Strategy.OR);
+        this.criteria.forEach(advancement::addCriterion);
+
+        DynamicChestRecipe recipe = new DynamicChestRecipe(this.category, this.ingredient, this.material);
+
+        output.accept(location, recipe, advancement.build(location.withPrefix("recipes/")));
+    }
+}

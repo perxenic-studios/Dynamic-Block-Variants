@@ -2,11 +2,9 @@ package dev.perxenic.dbvariants.datagen;
 
 import dev.perxenic.dbvariants.DBVariants;
 import dev.perxenic.dbvariants.registry.DBVItems;
-import dev.perxenic.dbvariants.utils.DBVItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -23,11 +21,7 @@ public class DBVItemTagProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        // Common Tags
         tag(Tags.Items.CHESTS_WOODEN)
                 .add(DBVItems.DYNAMIC_CHEST.get());
-        // DBV Tags
-        tag(DBVItemTags.CHEST_MATERIAL)
-                .addTag(ItemTags.PLANKS);
     }
 }

@@ -1,16 +1,19 @@
 package dev.perxenic.dbvariants.datagen;
 
-import dev.perxenic.dbvariants.DBVariants;
-import dev.perxenic.dbvariants.content.crafting.DynamicChestRecipe;
+import dev.perxenic.dbvariants.content.crafting.DynamicChestRecipeBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.SpecialRecipeBuilder;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
+
+import static dev.perxenic.dbvariants.DBVariants.dbvLoc;
 
 public class DBVRecipeProvider extends RecipeProvider implements IConditionBuilder {
     public DBVRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
@@ -19,6 +22,10 @@ public class DBVRecipeProvider extends RecipeProvider implements IConditionBuild
 
     @Override
     protected void buildRecipes(@NotNull RecipeOutput recipeOutput) {
-        SpecialRecipeBuilder.special(DynamicChestRecipe::new).save(recipeOutput, DBVariants.MODID);
+        new DynamicChestRecipeBuilder(
+                CraftingBookCategory.BUILDING,
+                Ingredient.of(ItemTags.PLANKS),
+                DBVChestMaterialProvider.DEFAULT_KEY.location()
+        ).save(recipeOutput, dbvLoc("default_dynamic_chest"));
     }
 }

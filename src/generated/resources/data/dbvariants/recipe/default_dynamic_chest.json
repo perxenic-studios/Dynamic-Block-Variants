@@ -1,0 +1,8 @@
+{
+  "type": "dbvariants:dynamic_chest",
+  "category": "building",
+  "ingredient": {
+    "tag": "minecraft:planks"
+  },
+  "material": "dbvariants:default"
+}
