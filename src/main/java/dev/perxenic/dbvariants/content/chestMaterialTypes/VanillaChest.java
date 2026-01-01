@@ -16,9 +16,9 @@ public class VanillaChest extends ChestMaterial{
 
     public static final ResourceLocation CHEST_SHEET = ResourceLocation.withDefaultNamespace("textures/atlas/chest.png");
 
-    public static Material mainMaterial;
-    public static Material leftMaterial;
-    public static Material rightMaterial;
+    public Material mainMaterial;
+    public Material leftMaterial;
+    public Material rightMaterial;
 
     public final String chestName;
 
