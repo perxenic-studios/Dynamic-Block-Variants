@@ -6,7 +6,6 @@ import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
-import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,24 +23,31 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import org.jetbrains.annotations.NotNull;
 
-public class VanillaChest extends ChestMaterial{
-    public static final MapCodec<VanillaChest> CODEC = RecordCodecBuilder.mapCodec(inst ->
-            inst.group(
-                ResourceLocation.CODEC.fieldOf("chest_name").forGetter(s -> s.chestName)
-            ).apply(inst, VanillaChest::new));
+import static dev.perxenic.dbvariants.DBVariants.dbvLoc;
 
-    public Material mainMaterial;
-    public Material leftMaterial;
-    public Material rightMaterial;
+public class BlockOverlayChest extends ChestMaterial{
+    public static final MapCodec<BlockOverlayChest> CODEC = RecordCodecBuilder.mapCodec(inst ->
+            inst.group(
+                ResourceLocation.CODEC.fieldOf("block_name").forGetter(s -> s.blockName)
+            ).apply(inst, BlockOverlayChest::new));
+
+    public Material blockMaterial;
+    public Material mainOverlayMaterial;
+    public Material leftOverlayMaterial;
+    public Material rightOverlayMaterial;
 
     // Change to a resource location or something to allow rendering chests from different namespaces
-    public final ResourceLocation chestName;
+    public final ResourceLocation blockName;
 
-    public VanillaChest(ResourceLocation chestName) {
-        this.chestName = chestName;
-        mainMaterial = newMainMaterial(chestName);
-        leftMaterial = newLeftMaterial(chestName);
-        rightMaterial = newRightMaterial(chestName);
+    public BlockOverlayChest(ResourceLocation blockName) {
+        this.blockName = blockName;
+        blockMaterial = new Material(
+                ResourceLocation.withDefaultNamespace("textures/atlas/blocks.png"),
+                blockName.withPrefix("block/")
+        );
+        mainOverlayMaterial = newMainMaterial(dbvLoc("overlay"));
+        leftOverlayMaterial = newLeftMaterial(dbvLoc("overlay"));
+        rightOverlayMaterial = newRightMaterial(dbvLoc("overlay"));
     }
 
     @Override
@@ -93,7 +99,15 @@ public class VanillaChest extends ChestMaterial{
         lidAngle = 1.0F - lidAngle * lidAngle * lidAngle;
         int brightness = neighborcombineresult.apply(new BrightnessCombiner<>()).applyAsInt(packedLight);
         Material material = getMaterial(chestType);
-        VertexConsumer vertexconsumer = material.buffer(bufferSource, RenderType::entityCutout);
+        VertexConsumer vertexconsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
+
+        VertexConsumer blockVertexConsumer = blockMaterial.buffer(bufferSource, RenderType::entityCutout);
+
+        switch (chestType) {
+            case SINGLE -> render(stack, blockVertexConsumer, lid, lock, bottom, lidAngle, brightness, packedOverlay);
+            case LEFT -> render(stack, blockVertexConsumer, doubleLeftLid, doubleLeftLock, doubleLeftBottom, lidAngle, brightness, packedOverlay);
+            case RIGHT -> render(stack, blockVertexConsumer, doubleRightLid, doubleRightLock, doubleRightBottom, lidAngle, brightness, packedOverlay);
+        }
 
         switch (chestType) {
             case SINGLE -> render(stack, vertexconsumer, lid, lock, bottom, lidAngle, brightness, packedOverlay);
@@ -123,9 +137,9 @@ public class VanillaChest extends ChestMaterial{
 
     protected Material getMaterial(ChestType chestType) {
         return switch (chestType) {
-            case SINGLE -> mainMaterial;
-            case LEFT -> leftMaterial;
-            case RIGHT -> rightMaterial;
+            case SINGLE -> mainOverlayMaterial;
+            case LEFT -> leftOverlayMaterial;
+            case RIGHT -> rightOverlayMaterial;
         };
     }
 }

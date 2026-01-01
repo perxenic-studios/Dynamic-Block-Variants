@@ -1,5 +1,6 @@
 package dev.perxenic.dbvariants.datagen;
 
+import dev.perxenic.dbvariants.content.chestMaterialTypes.BlockOverlayChest;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.VanillaChest;
 import dev.perxenic.dbvariants.registry.DBVRegistries;
@@ -18,6 +19,9 @@ public class DBVChestMaterialProvider {
     public static final ResourceKey<ChestMaterial> DEFAULT_KEY = chestMaterialKey("default");
     public static final ChestMaterial DEFAULT = new VanillaChest(mcLoc("normal"));
 
+    public static final ResourceKey<ChestMaterial> OAK_KEY = chestMaterialKey("oak");
+    public static final ChestMaterial OAK = new BlockOverlayChest(mcLoc("oak_planks"));
+
     public static void gatherData(GatherDataEvent event) {
         event.getGenerator().addProvider(
                 event.includeServer(),
@@ -29,6 +33,10 @@ public class DBVChestMaterialProvider {
                                     bootstrap.register(
                                             DEFAULT_KEY,
                                             DEFAULT
+                                    );
+                                    bootstrap.register(
+                                            OAK_KEY,
+                                            OAK
                                     );
                                 }),
                         Set.of(MODID)

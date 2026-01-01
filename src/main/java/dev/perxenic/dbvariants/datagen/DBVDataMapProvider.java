@@ -18,6 +18,7 @@ public class DBVDataMapProvider extends DataMapProvider {
     @Override
     protected void gather(HolderLookup.Provider provider) {
         builder(DBVDataMaps.CHEST_MATERIAL)
-                .add(ItemTags.PLANKS, DBVChestMaterialProvider.DEFAULT_KEY.location(), false);
+                .add(ItemTags.PLANKS, DBVChestMaterialProvider.DEFAULT_KEY.location(), false)
+                .add(Items.OAK_PLANKS.builtInRegistryHolder(), DBVChestMaterialProvider.OAK_KEY.location(), false);
     }
 }
