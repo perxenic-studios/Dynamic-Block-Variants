@@ -1,32 +1,28 @@
 package dev.perxenic.dbvariants.content.chestMaterialTypes;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 
-import static dev.perxenic.dbvariants.DBVariants.mcLoc;
-
 public class VanillaChest extends ChestMaterial{
     public static final MapCodec<VanillaChest> CODEC = RecordCodecBuilder.mapCodec(inst ->
             inst.group(
-                Codec.STRING.fieldOf("chest_name").forGetter(s -> s.chestName)
+                ResourceLocation.CODEC.fieldOf("chest_name").forGetter(s -> s.chestName)
             ).apply(inst, VanillaChest::new));
-
-    public static final ResourceLocation CHEST_SHEET = ResourceLocation.withDefaultNamespace("textures/atlas/chest.png");
 
     public Material mainMaterial;
     public Material leftMaterial;
     public Material rightMaterial;
 
-    public final String chestName;
+    // Change to a resource location or something to allow rendering chests from different namespaces
+    public final ResourceLocation chestName;
 
-    public VanillaChest(String chestName) {
+    public VanillaChest(ResourceLocation chestName) {
         this.chestName = chestName;
-        mainMaterial = new Material(CHEST_SHEET, mcLoc("entity/chest/" + chestName));
-        leftMaterial = new Material(CHEST_SHEET, mcLoc("entity/chest/" + chestName + "_left"));
-        rightMaterial = new Material(CHEST_SHEET, mcLoc("entity/chest/" + chestName + "_right"));
+        mainMaterial = newMainMaterial(chestName);
+        leftMaterial = newLeftMaterial(chestName);
+        rightMaterial = newRightMaterial(chestName);
     }
 
     @Override

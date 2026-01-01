@@ -11,13 +11,12 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.Set;
 
-import static dev.perxenic.dbvariants.DBVariants.MODID;
-import static dev.perxenic.dbvariants.DBVariants.dbvLoc;
+import static dev.perxenic.dbvariants.DBVariants.*;
 
 public class DBVChestMaterialProvider {
 
     public static final ResourceKey<ChestMaterial> DEFAULT_KEY = chestMaterialKey("default");
-    public static final ChestMaterial DEFAULT = new VanillaChest("normal");
+    public static final ChestMaterial DEFAULT = new VanillaChest(mcLoc("normal"));
 
     public static void gatherData(GatherDataEvent event) {
         event.getGenerator().addProvider(
