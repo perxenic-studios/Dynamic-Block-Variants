@@ -20,12 +20,10 @@ import java.util.Optional;
 public class BasicDynamicChestRecipe extends CustomRecipe {
 
     public final Ingredient ingredient;
-    public final ResourceLocation material;
 
-    public BasicDynamicChestRecipe(CraftingBookCategory category, Ingredient ingredient, ResourceLocation material) {
+    public BasicDynamicChestRecipe(CraftingBookCategory category, Ingredient ingredient) {
         super(category);
         this.ingredient = ingredient;
-        this.material = material;
     }
 
     @Override
@@ -63,20 +61,20 @@ public class BasicDynamicChestRecipe extends CustomRecipe {
 
     @Override
     public @NotNull ItemStack assemble(@NotNull CraftingInput craftingInput, HolderLookup.@NotNull Provider provider) {
-        ItemStack itemStack = DBVItems.DYNAMIC_CHEST.toStack();
+        ItemStack result = DBVItems.DYNAMIC_CHEST.toStack();
 
-        Optional<ItemStack> ingredient = craftingInput.items().stream().filter(filter -> !filter.isEmpty()).findFirst();
-        if (ingredient.isEmpty()) return ItemStack.EMPTY;
+        Optional<ItemStack> itemStack = craftingInput.items().stream().filter(filter -> !filter.isEmpty()).findFirst();
+        if (itemStack.isEmpty()) return ItemStack.EMPTY;
 
         CompoundTag compoundTag = new CompoundTag();
         compoundTag.putString("id", DBVBlockEntities.DYNAMIC_CHEST.getKey().location().toString());
 
-        compoundTag.putString(DynamicChestBlockEntity.MATERIAL_TAG, material.toString());
+        compoundTag.putString(DynamicChestBlockEntity.MATERIAL_TAG, itemStack.get().getItem().toString());
 
-        itemStack.applyComponents(
+        result.applyComponents(
                 DataComponentPatch.builder().set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(compoundTag)).build()
         );
-        return itemStack;
+        return result;
     }
 
     @Override

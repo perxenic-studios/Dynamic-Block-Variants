@@ -13,14 +13,12 @@ import org.jetbrains.annotations.NotNull;
 public class BasicDynamicChestRecipeSerializer implements RecipeSerializer<BasicDynamicChestRecipe> {
     public static final MapCodec<BasicDynamicChestRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             CraftingBookCategory.CODEC.fieldOf("category").forGetter(BasicDynamicChestRecipe::category),
-            Ingredient.CODEC.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient),
-            ResourceLocation.CODEC.fieldOf("material").forGetter(recipe -> recipe.material)
+            Ingredient.CODEC.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient)
     ).apply(inst, BasicDynamicChestRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, BasicDynamicChestRecipe> STREAM_CODEC = StreamCodec.composite(
             CraftingBookCategory.STREAM_CODEC, BasicDynamicChestRecipe::category,
             Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.ingredient,
-            ResourceLocation.STREAM_CODEC, recipe -> recipe.material,
             BasicDynamicChestRecipe::new
     );
 

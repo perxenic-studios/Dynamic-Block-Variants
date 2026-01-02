@@ -25,12 +25,10 @@ public class BasicDynamicChestRecipeBuilder implements RecipeBuilder {
 
     protected final CraftingBookCategory category;
     protected final Ingredient ingredient;
-    protected final ResourceLocation material;
 
-    public BasicDynamicChestRecipeBuilder(CraftingBookCategory category, Ingredient ingredient, ResourceLocation material) {
+    public BasicDynamicChestRecipeBuilder(CraftingBookCategory category, Ingredient ingredient) {
         this.category = category;
         this.ingredient = ingredient;
-        this.material = material;
     }
 
     @Override
@@ -58,7 +56,7 @@ public class BasicDynamicChestRecipeBuilder implements RecipeBuilder {
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(advancement::addCriterion);
 
-        BasicDynamicChestRecipe recipe = new BasicDynamicChestRecipe(this.category, this.ingredient, this.material);
+        BasicDynamicChestRecipe recipe = new BasicDynamicChestRecipe(this.category, this.ingredient);
 
         output.accept(location, recipe, advancement.build(location.withPrefix("recipes/")));
     }

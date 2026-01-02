@@ -3,6 +3,5 @@
   "category": "building",
   "ingredient": {
     "tag": "minecraft:planks"
-  },
-  "material": "dbvariants:default"
+  }
 }
