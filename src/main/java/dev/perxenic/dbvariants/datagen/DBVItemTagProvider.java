@@ -8,6 +8,7 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,7 +21,7 @@ public class DBVItemTagProvider extends ItemTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags(@NotNull HolderLookup.Provider provider) {
         tag(Tags.Items.CHESTS_WOODEN)
                 .add(DBVItems.DYNAMIC_CHEST.get());
     }

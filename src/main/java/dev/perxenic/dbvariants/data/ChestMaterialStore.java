@@ -47,7 +47,6 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
         return null;
     }
 
-    @Nullable
     private static ResourceLocation parseLocation(ResourceLocation location) {
         String path = location.getPath();
         // Remove the start of the path
