@@ -37,13 +37,14 @@ public class DynamicChestBlockEntity extends ChestBlockEntity {
 
     @OnlyIn(Dist.CLIENT)
     public void updateChestMaterial() {
+        if(chestMaterialLoc == null) return;
+
         if (!ChestMaterialStore.CHEST_MATERIALS.containsKey(chestMaterialLoc)) {
             DBVariants.LOGGER.warn("Material {} does not exist!", chestMaterialLoc);
             return;
         }
 
         chestMaterial = ChestMaterialStore.CHEST_MATERIALS.get(chestMaterialLoc);
-        DBVariants.LOGGER.info("{}",chestMaterial);
     }
 
     @Override
