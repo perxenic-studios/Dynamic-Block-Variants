@@ -351,7 +351,7 @@ public class EntityRendererHelper {
                     vc, stack,
                     start,
                     new Vector2f(size.x, size.y),
-                    new Vector2f(start.x, 16f - start.y - size.y),
+                    new Vector2f(16f - start.x - size.x, 16f - start.y - size.y),
                     16f,
                     packedLight, packedOverlay, 0xFFFFFFFF
             );
