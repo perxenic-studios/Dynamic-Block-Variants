@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.perxenic.dbvariants.DBVariants;
 import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
 import net.minecraft.client.model.geom.ModelPart;
@@ -33,7 +34,6 @@ public class VanillaChest extends ChestMaterial{
     public final Material leftMaterial;
     public final Material rightMaterial;
 
-    // Change to a resource location or something to allow rendering chests from different namespaces
     public final ResourceLocation chestName;
 
     public VanillaChest(ResourceLocation chestName) {

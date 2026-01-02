@@ -11,19 +11,19 @@ import java.util.HashMap;
 public class Config {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
-    public static final ModConfigSpec.BooleanValue ENABLE_VANILLA_CHEST_VARIANTS = BUILDER
-            .comment("Whether to enable vanilla chest variants")
-            .define("enableVanillaChestVariants", true);
+    public static final ModConfigSpec.BooleanValue VANILLA_DEFAULT_CHEST_TEXTURE = BUILDER
+            .comment("Whether unset materials should default to vanilla chest texture (Requires client reload)")
+            .define("vanillaDefaultChestTexture", false);
 
     static final ModConfigSpec SPEC = BUILDER.build();
 
-    public static boolean enableVanillaChestVariants;
+    public static boolean vanillaDefaultChestTexture;
 
     public static final HashMap<String, Boolean> configDict = new HashMap<>();
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
-        enableVanillaChestVariants = ENABLE_VANILLA_CHEST_VARIANTS.get();
-        configDict.put("enableVanillaChestVariants", enableVanillaChestVariants);
+        vanillaDefaultChestTexture = VANILLA_DEFAULT_CHEST_TEXTURE.get();
+        configDict.put("vanillaDefaultChestTexture", vanillaDefaultChestTexture);
     }
 }
