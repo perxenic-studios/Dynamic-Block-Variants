@@ -87,26 +87,25 @@ public class EntityRendererHelper {
         addVertex(
                 vc, stack, normal,
                 start,
-                uvOrigin.x,
-                uvOrigin.y + uvSize.y,
+                uvOrigin.x + uvSize.x, uvOrigin.y + uvSize.y,
                 packedLight, packedOverlay, color
         );
         addVertex(
                 vc, stack, normal,
                 new Vector3f(start).add(0, size.y, 0),
-                uvOrigin.x, uvOrigin.y,
-                packedLight, packedOverlay, color
-        );
-        addVertex(
-                vc, stack, normal,
-                new Vector3f(start).add(0, size.y, size.x),
                 uvOrigin.x + uvSize.x, uvOrigin.y,
                 packedLight, packedOverlay, color
         );
         addVertex(
                 vc, stack, normal,
+                new Vector3f(start).add(0, size.y, size.x),
+                uvOrigin.x, uvOrigin.y,
+                packedLight, packedOverlay, color
+        );
+        addVertex(
+                vc, stack, normal,
                 new Vector3f(start).add(0, 0, size.x),
-                uvOrigin.x + uvSize.x, uvOrigin.y + uvSize.y,
+                uvOrigin.x, uvOrigin.y + uvSize.y,
                 packedLight, packedOverlay, color
         );
     }
@@ -172,25 +171,25 @@ public class EntityRendererHelper {
         addVertex(
                 vc, stack, normal,
                 start,
-                uvOrigin.x, uvOrigin.y,
+                uvOrigin.x, uvOrigin.y + uvSize.y,
                 packedLight, packedOverlay, color
         );
         addVertex(
                 vc, stack, normal,
                 new Vector3f(start).add(size.x, 0, 0),
-                uvOrigin.x + uvSize.x, uvOrigin.y,
-                packedLight, packedOverlay, color
-        );
-        addVertex(
-                vc, stack, normal,
-                new Vector3f(start).add(size.x, 0, size.y),
                 uvOrigin.x + uvSize.x, uvOrigin.y + uvSize.y,
                 packedLight, packedOverlay, color
         );
         addVertex(
                 vc, stack, normal,
+                new Vector3f(start).add(size.x, 0, size.y),
+                uvOrigin.x + uvSize.x, uvOrigin.y,
+                packedLight, packedOverlay, color
+        );
+        addVertex(
+                vc, stack, normal,
                 new Vector3f(start).add(0, 0, size.y),
-                uvOrigin.x, uvOrigin.y + uvSize.y,
+                uvOrigin.x, uvOrigin.y,
                 packedLight, packedOverlay, color
         );
     }
@@ -256,25 +255,25 @@ public class EntityRendererHelper {
         addVertex(
                 vc, stack, normal,
                 start,
-                uvOrigin.x + uvSize.x, uvOrigin.y + uvSize.y,
-                packedLight, packedOverlay, color
-        );
-        addVertex(
-                vc, stack, normal,
-                new Vector3f(start).add(size.x, 0, 0),
                 uvOrigin.x, uvOrigin.y + uvSize.y,
                 packedLight, packedOverlay, color
         );
         addVertex(
                 vc, stack, normal,
+                new Vector3f(start).add(size.x, 0, 0),
+                uvOrigin.x + uvSize.x, uvOrigin.y + uvSize.y,
+                packedLight, packedOverlay, color
+        );
+        addVertex(
+                vc, stack, normal,
                 new Vector3f(start).add(size.x, size.y, 0),
-                uvOrigin.x, uvOrigin.y,
+                uvOrigin.x + uvSize.x, uvOrigin.y,
                 packedLight, packedOverlay, color
         );
         addVertex(
                 vc, stack, normal,
                 new Vector3f(start).add(0, size.y, 0),
-                uvOrigin.x + uvSize.x, uvOrigin.y,
+                uvOrigin.x, uvOrigin.y,
                 packedLight, packedOverlay, color
         );
     }
