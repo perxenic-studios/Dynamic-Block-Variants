@@ -20,12 +20,12 @@ public class DBVDataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
+        generator.addProvider(event.includeClient(), new DBVChestMaterialProvider(packOutput, lookupProvider, existingFileHelper));
+
         BlockTagsProvider blockTagsProvider = new DBVBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
         generator.addProvider(event.includeServer(), blockTagsProvider);
         generator.addProvider(event.includeServer(), new DBVItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
 
         generator.addProvider(event.includeServer(), new DBVRecipeProvider(packOutput, lookupProvider));
-
-        DBVChestMaterialProvider.gatherData(event);
     }
 }

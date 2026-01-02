@@ -7,7 +7,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
@@ -23,24 +22,12 @@ public class DBVRegistries {
             .defaultKey(dbvLoc("vanilla"))
             .create();
 
-    public static final ResourceKey<Registry<ChestMaterial>> CHEST_MATERIAL_REGISTRY_KEY =
-            ResourceKey.createRegistryKey(dbvLoc("chest_material"));
-
     public static final Codec<ChestMaterial> CHEST_MATERIAL_CODEC = CHEST_MATERIAL_TYPE_REGISTRY.byNameCodec().dispatch(
-        ChestMaterial::codec, Function.identity()
+            ChestMaterial::codec, Function.identity()
     );
 
     @SubscribeEvent
     public static void registerRegistries(NewRegistryEvent event) {
         event.register(CHEST_MATERIAL_TYPE_REGISTRY);
-    }
-
-    @SubscribeEvent
-    public static void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
-        event.dataPackRegistry(
-                CHEST_MATERIAL_REGISTRY_KEY,
-                CHEST_MATERIAL_CODEC,
-                CHEST_MATERIAL_CODEC
-        );
     }
 }

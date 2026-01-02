@@ -38,7 +38,7 @@ public class DynamicChestBER implements BlockEntityRenderer<DynamicChestBlockEnt
     }@Override
     public void render(@NotNull DynamicChestBlockEntity blockEntity, float partialTick, @NotNull PoseStack stack,
                        @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        ChestMaterial dynamicMaterial = blockEntity.dynamicMaterial == null ? DBVChestMaterialProvider.DEFAULT : blockEntity.dynamicMaterial.value();
+        ChestMaterial dynamicMaterial = blockEntity.chestMaterial == null ? DBVChestMaterialProvider.DEFAULT : blockEntity.chestMaterial;
 
         dynamicMaterial.render(
                 blockEntity,

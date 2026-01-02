@@ -25,7 +25,7 @@ public class DBVRecipeProvider extends RecipeProvider implements IConditionBuild
         new DynamicChestRecipeBuilder(
                 CraftingBookCategory.BUILDING,
                 Ingredient.of(ItemTags.PLANKS),
-                DBVChestMaterialProvider.DEFAULT_KEY.location()
+                DBVChestMaterialProvider.DEFAULT_KEY
         ).save(recipeOutput, dbvLoc("default_dynamic_chest"));
     }
 }
