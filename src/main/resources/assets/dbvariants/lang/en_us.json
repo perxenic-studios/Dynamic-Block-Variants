@@ -1,13 +1,9 @@
 {
-  "itemGroup.dbvariants": "Example Mod Tab",
-  "block.dbvariants.example_block": "Example Block",
-  "item.dbvariants.example_item": "Example Item",
+  "block.dbvariants.dynamic_chest": "Dynamic Chest",
 
   "dbvariants.configuration.title": "Dynamic Block Variants Configs",
   "dbvariants.configuration.section.dbvariants.common.toml": "Dynamic Block Variants Configs",
   "dbvariants.configuration.section.dbvariants.common.toml.title": "Dynamic Block Variants Configs",
-  "dbvariants.configuration.items": "Item List",
-  "dbvariants.configuration.logDirtBlock": "Log Dirt Block",
-  "dbvariants.configuration.magicNumberIntroduction": "Magic Number Text",
-  "dbvariants.configuration.magicNumber": "Magic Number"
+  "dbvariants.configuration.vanillaDefaultChestTexture": "Vanilla Default Chest Texture",
+  "dbvariants.configuration.vanillaDefaultChestTexture.tooltip": "Whether unset materials should default to vanilla chest texture (Requires client reload)"
 }
