@@ -6,7 +6,6 @@ import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
-import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
