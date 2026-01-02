@@ -1,6 +1,5 @@
 package dev.perxenic.dbvariants.datagen;
 
-import dev.perxenic.dbvariants.content.chestMaterialTypes.BlockOverlayChest;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.VanillaChest;
 import dev.perxenic.dbvariants.registry.DBVRegistries;

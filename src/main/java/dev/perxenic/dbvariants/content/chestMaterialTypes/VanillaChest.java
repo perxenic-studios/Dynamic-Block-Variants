@@ -30,9 +30,9 @@ public class VanillaChest extends ChestMaterial{
                 ResourceLocation.CODEC.fieldOf("chest_name").forGetter(s -> s.chestName)
             ).apply(inst, VanillaChest::new));
 
-    public Material mainMaterial;
-    public Material leftMaterial;
-    public Material rightMaterial;
+    public final Material mainMaterial;
+    public final Material leftMaterial;
+    public final Material rightMaterial;
 
     // Change to a resource location or something to allow rendering chests from different namespaces
     public final ResourceLocation chestName;

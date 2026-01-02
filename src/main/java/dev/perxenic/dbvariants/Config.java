@@ -19,7 +19,7 @@ public class Config {
 
     public static boolean enableVanillaChestVariants;
 
-    public static HashMap<String, Boolean> configDict = new HashMap<>();
+    public static final HashMap<String, Boolean> configDict = new HashMap<>();
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {

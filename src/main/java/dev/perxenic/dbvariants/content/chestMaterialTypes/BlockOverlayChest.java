@@ -34,10 +34,10 @@ public class BlockOverlayChest extends ChestMaterial{
                 ResourceLocation.CODEC.fieldOf("block_name").forGetter(s -> s.blockName)
             ).apply(inst, BlockOverlayChest::new));
 
-    public Material blockMaterial;
-    public Material mainOverlayMaterial;
-    public Material leftOverlayMaterial;
-    public Material rightOverlayMaterial;
+    public final Material blockMaterial;
+    public final Material mainOverlayMaterial;
+    public final Material leftOverlayMaterial;
+    public final Material rightOverlayMaterial;
 
     public final ResourceLocation blockName;
 
