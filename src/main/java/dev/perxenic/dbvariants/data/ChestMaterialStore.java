@@ -3,7 +3,9 @@ package dev.perxenic.dbvariants.data;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.JsonOps;
+import dev.perxenic.dbvariants.Config;
 import dev.perxenic.dbvariants.DBVariants;
+import dev.perxenic.dbvariants.content.chestMaterialTypes.BlockOverlayChest;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
 import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVRegistries;
@@ -26,8 +28,6 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
     @Override
     public void onResourceManagerReload(@NotNull ResourceManager resourceManager) {
         CHEST_MATERIALS.clear();
-        DBVariants.LOGGER.info("Chest Material List: {}", resourceManager.listResources(DBVChestMaterialProvider.DIRECTORY,
-                location -> location.getPath().endsWith(".json")));
         for (Map.Entry<ResourceLocation, Resource> entry : resourceManager.listResources(DBVChestMaterialProvider.DIRECTORY,
                 location -> location.getPath().endsWith(".json")).entrySet()) {
             ChestMaterial material = parseChestMaterial(entry);
@@ -55,5 +55,15 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
         path = path.split("\\.")[0];
 
         return location.withPath(path);
+    }
+
+    public static ChestMaterial getChestMaterialSafe(ResourceLocation chestMaterialLoc) {
+        if(chestMaterialLoc == null) return DBVChestMaterialProvider.DEFAULT;
+
+        if (!CHEST_MATERIALS.containsKey(chestMaterialLoc)) return Config.vanillaDefaultChestTexture
+                ? DBVChestMaterialProvider.DEFAULT
+                : new BlockOverlayChest(chestMaterialLoc);
+
+        return CHEST_MATERIALS.get(chestMaterialLoc);
     }
 }

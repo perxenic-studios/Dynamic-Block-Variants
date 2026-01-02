@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -73,7 +74,8 @@ public class BlockOverlayChest extends ChestMaterial{
             ModelPart doubleLeftLock,
             ModelPart doubleRightBottom,
             ModelPart doubleRightLid,
-            ModelPart doubleRightLock
+            ModelPart doubleRightLock,
+            boolean isItem
     ) {
         Level level = blockEntity.getLevel();
         boolean levelPresent = level != null;
@@ -126,6 +128,12 @@ public class BlockOverlayChest extends ChestMaterial{
                 }
         );
 
+        if (isItem) {
+            stack.translate(0.5F, 0.5F, 0.5F);
+            stack.mulPose(new Matrix4f().scale(1.01f));
+            stack.translate(-0.5F, -0.5F, -0.5F);
+        }
+
         // Chest Body Overlay
         EntityRendererHelper.drawFlippedCube(
                 vertexConsumer,
@@ -142,6 +150,12 @@ public class BlockOverlayChest extends ChestMaterial{
                         false, false, false , false
                 }
         );
+
+        if (isItem) {
+            stack.translate(0.5F, 0.5F, 0.5F);
+            stack.mulPose(new Matrix4f().scale(1/1.01f));
+            stack.translate(-0.5F, -0.5F, -0.5F);
+        }
 
         stack.translate(0f, 9/16f, 1/16f);
         stack.mulPose(Axis.XP.rotationDegrees(-lidAngle * 90f));
@@ -162,6 +176,12 @@ public class BlockOverlayChest extends ChestMaterial{
                 }
         );
 
+        if (isItem) {
+            stack.translate(0.5F, 0.5F, 0.5F);
+            stack.mulPose(new Matrix4f().scale(1.01f));
+            stack.translate(-0.5F, -0.5F, -0.5F);
+        }
+
         // Chest Lid Overlay
         EntityRendererHelper.drawFlippedCube(
                 vertexConsumer,
@@ -178,6 +198,12 @@ public class BlockOverlayChest extends ChestMaterial{
                         false, false, false , false
                 }
         );
+
+        if (isItem) {
+            stack.translate(0.5F, 0.5F, 0.5F);
+            stack.mulPose(new Matrix4f().scale(1/1.01f));
+            stack.translate(-0.5F, -0.5F, -0.5F);
+        }
 
         float lockWidth = chestType == ChestType.SINGLE ? 2f: 1f;
         float lockPos = switch (chestType) {

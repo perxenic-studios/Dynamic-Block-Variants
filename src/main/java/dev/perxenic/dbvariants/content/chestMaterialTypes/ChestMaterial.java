@@ -29,7 +29,8 @@ public abstract class ChestMaterial {
             ModelPart doubleLeftLock,
             ModelPart doubleRightBottom,
             ModelPart doubleRightLid,
-            ModelPart doubleRightLock
+            ModelPart doubleRightLock,
+            boolean isItem
     );
 
     protected static ResourceLocation newMainLoc(ResourceLocation chestName) {

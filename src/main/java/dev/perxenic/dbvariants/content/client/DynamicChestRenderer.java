@@ -1,4 +1,4 @@
-package dev.perxenic.dbvariants.content.blocks.client;
+package dev.perxenic.dbvariants.content.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
@@ -15,15 +15,15 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class DynamicChestRenderer implements BlockEntityRenderer<DynamicChestBlockEntity> {
-    private final ModelPart bottom;
-    private final ModelPart lid;
-    private final ModelPart lock;
-    private final ModelPart doubleLeftBottom;
-    private final ModelPart doubleLeftLid;
-    private final ModelPart doubleLeftLock;
-    private final ModelPart doubleRightBottom;
-    private final ModelPart doubleRightLid;
-    private final ModelPart doubleRightLock;
+    public final ModelPart bottom;
+    public final ModelPart lid;
+    public final ModelPart lock;
+    public final ModelPart doubleLeftBottom;
+    public final ModelPart doubleLeftLid;
+    public final ModelPart doubleLeftLock;
+    public final ModelPart doubleRightBottom;
+    public final ModelPart doubleRightLid;
+    public final ModelPart doubleRightLock;
 
     public DynamicChestRenderer(BlockEntityRendererProvider.Context context) {
         ModelPart chestModelPart = context.bakeLayer(ModelLayers.CHEST);
@@ -58,7 +58,8 @@ public class DynamicChestRenderer implements BlockEntityRenderer<DynamicChestBlo
                 doubleLeftLock,
                 doubleRightBottom,
                 doubleRightLid,
-                doubleRightLock
+                doubleRightLock,
+                false
         );
     }
 }

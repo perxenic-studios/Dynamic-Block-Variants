@@ -1,12 +1,7 @@
 package dev.perxenic.dbvariants.content.blocks;
 
-import dev.perxenic.dbvariants.Config;
-import dev.perxenic.dbvariants.DBVariants;
-import dev.perxenic.dbvariants.content.chestMaterialTypes.BlockOverlayChest;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
-import dev.perxenic.dbvariants.content.chestMaterialTypes.VanillaChest;
 import dev.perxenic.dbvariants.data.ChestMaterialStore;
-import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -36,22 +31,7 @@ public class DynamicChestBlockEntity extends ChestBlockEntity {
 
     @OnlyIn(Dist.CLIENT)
     public void updateChestMaterial() {
-        if(chestMaterialLoc == null) {
-            // No matter what config is, if location is null use vanilla texture as server hasn't sent data yet
-            chestMaterial = DBVChestMaterialProvider.DEFAULT;
-            return;
-        }
-
-        if (!ChestMaterialStore.CHEST_MATERIALS.containsKey(chestMaterialLoc)) {
-            if (Config.vanillaDefaultChestTexture) {
-                chestMaterial = DBVChestMaterialProvider.DEFAULT;
-            } else {
-                chestMaterial = new BlockOverlayChest(chestMaterialLoc);
-            }
-            return;
-        }
-
-        chestMaterial = ChestMaterialStore.CHEST_MATERIALS.get(chestMaterialLoc);
+        chestMaterial = ChestMaterialStore.getChestMaterialSafe(chestMaterialLoc);
     }
 
     @Override

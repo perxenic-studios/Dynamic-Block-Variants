@@ -64,7 +64,8 @@ public class VanillaChest extends ChestMaterial{
             ModelPart doubleLeftLock,
             ModelPart doubleRightBottom,
             ModelPart doubleRightLid,
-            ModelPart doubleRightLock
+            ModelPart doubleRightLock,
+            boolean isItem
     ) {
         Level level = blockEntity.getLevel();
         boolean levelPresent = level != null;
