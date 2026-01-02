@@ -7,6 +7,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
+import dev.perxenic.dbvariants.util.EntityRendererHelper;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -22,6 +23,8 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import static dev.perxenic.dbvariants.DBVariants.dbvLoc;
 
@@ -36,7 +39,6 @@ public class BlockOverlayChest extends ChestMaterial{
     public Material leftOverlayMaterial;
     public Material rightOverlayMaterial;
 
-    // Change to a resource location or something to allow rendering chests from different namespaces
     public final ResourceLocation blockName;
 
     public BlockOverlayChest(ResourceLocation blockName) {
@@ -99,40 +101,105 @@ public class BlockOverlayChest extends ChestMaterial{
         lidAngle = 1.0F - lidAngle * lidAngle * lidAngle;
         int brightness = neighborcombineresult.apply(new BrightnessCombiner<>()).applyAsInt(packedLight);
         Material material = getMaterial(chestType);
-        VertexConsumer vertexconsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
+        VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
 
         VertexConsumer blockVertexConsumer = blockMaterial.buffer(bufferSource, RenderType::entityCutout);
 
-        switch (chestType) {
-            case SINGLE -> render(stack, blockVertexConsumer, lid, lock, bottom, lidAngle, brightness, packedOverlay);
-            case LEFT -> render(stack, blockVertexConsumer, doubleLeftLid, doubleLeftLock, doubleLeftBottom, lidAngle, brightness, packedOverlay);
-            case RIGHT -> render(stack, blockVertexConsumer, doubleRightLid, doubleRightLock, doubleRightBottom, lidAngle, brightness, packedOverlay);
-        }
+        boolean isDouble = chestType != ChestType.SINGLE;
+        boolean isOffset = chestType != ChestType.LEFT;
 
-        switch (chestType) {
-            case SINGLE -> render(stack, vertexconsumer, lid, lock, bottom, lidAngle, brightness, packedOverlay);
-            case LEFT -> render(stack, vertexconsumer, doubleLeftLid, doubleLeftLock, doubleLeftBottom, lidAngle, brightness, packedOverlay);
-            case RIGHT -> render(stack, vertexconsumer, doubleRightLid, doubleRightLock, doubleRightBottom, lidAngle, brightness, packedOverlay);
-        }
+        float width = isDouble ? 15f : 14f;
+        float startX = isOffset ? 1f : 0f;
+
+        // Chest Body
+        EntityRendererHelper.drawInsetCube(
+                blockVertexConsumer,
+                stack,
+                new Vector3f(startX, 0f, 1f),
+                new Vector3f(width, 10f, 14f),
+                packedOverlay,
+                brightness,
+                new boolean[] {
+                        chestType == ChestType.LEFT,
+                        chestType == ChestType.RIGHT,
+                        false, false, false , false
+                }
+        );
+
+        // Chest Body Overlay
+        EntityRendererHelper.drawFlippedCube(
+                vertexConsumer,
+                stack,
+                new Vector3f(startX, 0f, 1f),
+                new Vector3f(width, 10f, 14f),
+                new Vector2f(0f, 19f),
+                64f,
+                packedOverlay,
+                brightness,
+                new boolean[] {
+                        chestType == ChestType.LEFT,
+                        chestType == ChestType.RIGHT,
+                        false, false, false , false
+                }
+        );
+
+        stack.translate(0f, 9/16f, 1/16f);
+        stack.mulPose(Axis.XP.rotationDegrees(-lidAngle * 90f));
+        stack.translate(0f, -9/16f, -1/16f);
+
+        // Chest Lid
+        EntityRendererHelper.drawInsetCube(
+                blockVertexConsumer,
+                stack,
+                new Vector3f(startX, 9f, 1f),
+                new Vector3f(width, 5f, 14f),
+                packedOverlay,
+                brightness,
+                new boolean[] {
+                        chestType == ChestType.LEFT,
+                        chestType == ChestType.RIGHT,
+                        false, false, false , false
+                }
+        );
+
+        // Chest Lid Overlay
+        EntityRendererHelper.drawFlippedCube(
+                vertexConsumer,
+                stack,
+                new Vector3f(startX, 9f, 1f),
+                new Vector3f(width, 5f, 14f),
+                new Vector2f(0f, 0f),
+                64f,
+                packedOverlay,
+                brightness,
+                new boolean[] {
+                        chestType == ChestType.LEFT,
+                        chestType == ChestType.RIGHT,
+                        false, false, false , false
+                }
+        );
+
+        float lockWidth = chestType == ChestType.SINGLE ? 2f: 1f;
+        float lockPos = switch (chestType) {
+            case SINGLE -> 7f;
+            case LEFT -> 0f;
+            case RIGHT -> 15f;
+        };
+
+        // Chest Lock from Overlay
+        EntityRendererHelper.drawFlippedCube(
+                vertexConsumer,
+                stack,
+                new Vector3f(lockPos, 7f, 15f),
+                new Vector3f(lockWidth, 4f, 1f),
+                new Vector2f(0f, 0f),
+                64f,
+                packedOverlay,
+                brightness,
+                new boolean[6]
+        );
 
         stack.popPose();
-    }
-
-    private void render(
-            PoseStack poseStack,
-            VertexConsumer consumer,
-            ModelPart lidPart,
-            ModelPart lockPart,
-            ModelPart bottomPart,
-            float lidAngle,
-            int packedLight,
-            int packedOverlay
-    ) {
-        lidPart.xRot = -(lidAngle * (float) (Math.PI / 2));
-        lockPart.xRot = lidPart.xRot;
-        lidPart.render(poseStack, consumer, packedLight, packedOverlay);
-        lockPart.render(poseStack, consumer, packedLight, packedOverlay);
-        bottomPart.render(poseStack, consumer, packedLight, packedOverlay);
     }
 
     protected Material getMaterial(ChestType chestType) {
