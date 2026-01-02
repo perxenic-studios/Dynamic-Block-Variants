@@ -1,7 +1,7 @@
 package dev.perxenic.dbvariants.registry;
 
 import dev.perxenic.dbvariants.DBVariants;
-import dev.perxenic.dbvariants.content.crafting.DynamicChestRecipe;
+import dev.perxenic.dbvariants.content.crafting.BasicDynamicChestRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.bus.api.IEventBus;
@@ -13,7 +13,7 @@ public class DBVRecipeTypes {
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES =
             DeferredRegister.create(Registries.RECIPE_TYPE, DBVariants.MODID);
 
-    public static final Supplier<RecipeType<DynamicChestRecipe>> DYNAMIC_CHEST_RECIPE =
+    public static final Supplier<RecipeType<BasicDynamicChestRecipe>> DYNAMIC_CHEST_RECIPE =
             RECIPE_TYPES.register(
                     "dynamic_chest",
                     RecipeType::simple

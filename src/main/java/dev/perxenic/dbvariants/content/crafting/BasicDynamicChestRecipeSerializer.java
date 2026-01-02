@@ -10,28 +10,28 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import org.jetbrains.annotations.NotNull;
 
-public class DynamicChestRecipeSerializer implements RecipeSerializer<DynamicChestRecipe> {
-    public static final MapCodec<DynamicChestRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-            CraftingBookCategory.CODEC.fieldOf("category").forGetter(DynamicChestRecipe::category),
+public class BasicDynamicChestRecipeSerializer implements RecipeSerializer<BasicDynamicChestRecipe> {
+    public static final MapCodec<BasicDynamicChestRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+            CraftingBookCategory.CODEC.fieldOf("category").forGetter(BasicDynamicChestRecipe::category),
             Ingredient.CODEC.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient),
             ResourceLocation.CODEC.fieldOf("material").forGetter(recipe -> recipe.material)
-    ).apply(inst, DynamicChestRecipe::new));
+    ).apply(inst, BasicDynamicChestRecipe::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, DynamicChestRecipe> STREAM_CODEC = StreamCodec.composite(
-            CraftingBookCategory.STREAM_CODEC, DynamicChestRecipe::category,
+    public static final StreamCodec<RegistryFriendlyByteBuf, BasicDynamicChestRecipe> STREAM_CODEC = StreamCodec.composite(
+            CraftingBookCategory.STREAM_CODEC, BasicDynamicChestRecipe::category,
             Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.ingredient,
             ResourceLocation.STREAM_CODEC, recipe -> recipe.material,
-            DynamicChestRecipe::new
+            BasicDynamicChestRecipe::new
     );
 
 
     @Override
-    public @NotNull MapCodec<DynamicChestRecipe> codec() {
+    public @NotNull MapCodec<BasicDynamicChestRecipe> codec() {
         return CODEC;
     }
 
     @Override
-    public @NotNull StreamCodec<RegistryFriendlyByteBuf, DynamicChestRecipe> streamCodec() {
+    public @NotNull StreamCodec<RegistryFriendlyByteBuf, BasicDynamicChestRecipe> streamCodec() {
         return STREAM_CODEC;
     }
 }

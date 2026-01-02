@@ -1,7 +1,7 @@
 package dev.perxenic.dbvariants.registry;
 
 import dev.perxenic.dbvariants.DBVariants;
-import dev.perxenic.dbvariants.content.blocks.client.DynamicChestBER;
+import dev.perxenic.dbvariants.content.blocks.client.DynamicChestRenderer;
 import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,7 +27,7 @@ public class DBVBlockEntities {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(
                 DBVBlockEntities.DYNAMIC_CHEST.get(),
-                DynamicChestBER::new
+                DynamicChestRenderer::new
         );
     }
 

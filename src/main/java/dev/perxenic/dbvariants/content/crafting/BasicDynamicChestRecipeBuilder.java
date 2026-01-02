@@ -10,7 +10,6 @@ import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class DynamicChestRecipeBuilder implements RecipeBuilder {
+public class BasicDynamicChestRecipeBuilder implements RecipeBuilder {
     protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
     @Nullable
     protected String group;
@@ -28,7 +27,7 @@ public class DynamicChestRecipeBuilder implements RecipeBuilder {
     protected final Ingredient ingredient;
     protected final ResourceLocation material;
 
-    public DynamicChestRecipeBuilder(CraftingBookCategory category, Ingredient ingredient, ResourceLocation material) {
+    public BasicDynamicChestRecipeBuilder(CraftingBookCategory category, Ingredient ingredient, ResourceLocation material) {
         this.category = category;
         this.ingredient = ingredient;
         this.material = material;
@@ -59,7 +58,7 @@ public class DynamicChestRecipeBuilder implements RecipeBuilder {
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(advancement::addCriterion);
 
-        DynamicChestRecipe recipe = new DynamicChestRecipe(this.category, this.ingredient, this.material);
+        BasicDynamicChestRecipe recipe = new BasicDynamicChestRecipe(this.category, this.ingredient, this.material);
 
         output.accept(location, recipe, advancement.build(location.withPrefix("recipes/")));
     }

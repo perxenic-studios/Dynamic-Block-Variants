@@ -14,7 +14,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class DynamicChestBER implements BlockEntityRenderer<DynamicChestBlockEntity> {
+public class DynamicChestRenderer implements BlockEntityRenderer<DynamicChestBlockEntity> {
     private final ModelPart bottom;
     private final ModelPart lid;
     private final ModelPart lock;
@@ -25,7 +25,7 @@ public class DynamicChestBER implements BlockEntityRenderer<DynamicChestBlockEnt
     private final ModelPart doubleRightLid;
     private final ModelPart doubleRightLock;
 
-    public DynamicChestBER(BlockEntityRendererProvider.Context context) {
+    public DynamicChestRenderer(BlockEntityRendererProvider.Context context) {
         ModelPart chestModelPart = context.bakeLayer(ModelLayers.CHEST);
         this.bottom = chestModelPart.getChild("bottom");
         this.lid = chestModelPart.getChild("lid");

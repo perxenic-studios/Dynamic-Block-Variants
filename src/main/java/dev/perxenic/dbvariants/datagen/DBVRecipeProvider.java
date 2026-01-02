@@ -1,6 +1,6 @@
 package dev.perxenic.dbvariants.datagen;
 
-import dev.perxenic.dbvariants.content.crafting.DynamicChestRecipeBuilder;
+import dev.perxenic.dbvariants.content.crafting.BasicDynamicChestRecipeBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -22,7 +22,7 @@ public class DBVRecipeProvider extends RecipeProvider implements IConditionBuild
 
     @Override
     protected void buildRecipes(@NotNull RecipeOutput recipeOutput) {
-        new DynamicChestRecipeBuilder(
+        new BasicDynamicChestRecipeBuilder(
                 CraftingBookCategory.BUILDING,
                 Ingredient.of(ItemTags.PLANKS),
                 DBVChestMaterialProvider.DEFAULT_KEY

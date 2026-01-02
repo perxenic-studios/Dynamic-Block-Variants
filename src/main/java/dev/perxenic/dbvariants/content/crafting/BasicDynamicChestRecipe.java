@@ -1,9 +1,6 @@
 package dev.perxenic.dbvariants.content.crafting;
 
-import dev.perxenic.dbvariants.DBVariants;
 import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
-import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
-import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVBlockEntities;
 import dev.perxenic.dbvariants.registry.DBVItems;
 import dev.perxenic.dbvariants.registry.DBVRecipeSerializers;
@@ -20,12 +17,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class DynamicChestRecipe extends CustomRecipe {
+public class BasicDynamicChestRecipe extends CustomRecipe {
 
     public final Ingredient ingredient;
     public final ResourceLocation material;
 
-    public DynamicChestRecipe(CraftingBookCategory category, Ingredient ingredient, ResourceLocation material) {
+    public BasicDynamicChestRecipe(CraftingBookCategory category, Ingredient ingredient, ResourceLocation material) {
         super(category);
         this.ingredient = ingredient;
         this.material = material;
