@@ -17,6 +17,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -26,11 +28,22 @@ public class DynamicChestBlockEntity extends ChestBlockEntity {
     public static final String MATERIAL_TAG = "dynamic_material";
     public ResourceLocation chestMaterialLoc;
 
-    // Client-side only
+    @OnlyIn(Dist.CLIENT)
     public ChestMaterial chestMaterial;
 
     public DynamicChestBlockEntity(BlockPos pos, BlockState state) {
         super(DBVBlockEntities.DYNAMIC_CHEST.get(), pos, state);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void updateChestMaterial() {
+        if (!ChestMaterialStore.CHEST_MATERIALS.containsKey(chestMaterialLoc)) {
+            DBVariants.LOGGER.warn("Material {} does not exist!", chestMaterialLoc);
+            return;
+        }
+
+        chestMaterial = ChestMaterialStore.CHEST_MATERIALS.get(chestMaterialLoc);
+        DBVariants.LOGGER.info("{}",chestMaterial);
     }
 
     @Override
@@ -57,18 +70,20 @@ public class DynamicChestBlockEntity extends ChestBlockEntity {
     public void onDataPacket(@NotNull Connection net, @NotNull ClientboundBlockEntityDataPacket pkt, HolderLookup.@NotNull Provider lookupProvider) {
         super.onDataPacket(net, pkt, lookupProvider);
 
-        // When packet is received on client side, update the chest material that should be displayed
-        if (!ChestMaterialStore.CHEST_MATERIALS.containsKey(chestMaterialLoc)) {
-            DBVariants.LOGGER.warn("Material {} does not exist!", chestMaterialLoc);
-            return;
-        }
-
-        chestMaterial = ChestMaterialStore.CHEST_MATERIALS.get(chestMaterialLoc);
-        DBVariants.LOGGER.info("{}",chestMaterial);
+        if (level == null) return;
+        if (level.isClientSide) updateChestMaterial();
     }
 
     @Override
     public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider pRegistries) {
         return saveWithoutMetadata(pRegistries);
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+
+        if (level == null) return;
+        if (level.isClientSide) updateChestMaterial();
     }
 }
