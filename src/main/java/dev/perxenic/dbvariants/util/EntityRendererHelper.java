@@ -2,9 +2,12 @@ package dev.perxenic.dbvariants.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+@OnlyIn(Dist.CLIENT)
 public class EntityRendererHelper {
     public static void addVertex(
             VertexConsumer vc,

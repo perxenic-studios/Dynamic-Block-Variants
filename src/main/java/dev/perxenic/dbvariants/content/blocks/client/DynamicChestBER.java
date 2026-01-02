@@ -9,8 +9,11 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
+@OnlyIn(Dist.CLIENT)
 public class DynamicChestBER implements BlockEntityRenderer<DynamicChestBlockEntity> {
     private final ModelPart bottom;
     private final ModelPart lid;
