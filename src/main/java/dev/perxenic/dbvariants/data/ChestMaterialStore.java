@@ -9,6 +9,7 @@ import dev.perxenic.dbvariants.content.chestMaterialTypes.BlockOverlayChest;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
 import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVRegistries;
+import dev.perxenic.dbvariants.util.PathHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.SpriteContents;
@@ -21,26 +22,47 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Predicate;
 
+/**
+ * A clientside cache for ChestMaterials to be rendered by the Dynamic Chest
+ * @see ChestMaterialStore#getChestMaterialSafe(ResourceLocation)
+ */
+@OnlyIn(Dist.CLIENT)
 public class ChestMaterialStore implements ResourceManagerReloadListener {
-    public static final HashMap<ResourceLocation, ChestMaterial> CHEST_MATERIALS = new HashMap<>();
+    /**
+     * A Hashmap to cache all chest materials loaded from resources or generated from the default
+     */
+    private static final HashMap<ResourceLocation, ChestMaterial> CHEST_MATERIALS = new HashMap<>();
 
+    /**
+     * Ran on client resources reload, clears chest material cache and loads chest materials from resources
+     * @param resourceManager The {@link ResourceManager} instance to load resources with
+     */
     @Override
     public void onResourceManagerReload(@NotNull ResourceManager resourceManager) {
         CHEST_MATERIALS.clear();
         for (Map.Entry<ResourceLocation, Resource> entry : resourceManager.listResources(DBVChestMaterialProvider.DIRECTORY,
                 location -> location.getPath().endsWith(".json")).entrySet()) {
             ChestMaterial material = parseChestMaterial(entry);
-            if (material != null) CHEST_MATERIALS.put(parseLocation(entry.getKey()), material);
+            if (material != null) CHEST_MATERIALS.put(PathHelper.getFileID(entry.getKey()), material);
         }
     }
 
+    /**
+     * Parses chest material from resources map
+     * @param entry A map entry returned by {@link ResourceManager#listResources(String, Predicate)}
+     * @return The {@link ChestMaterial} instance decoded from JSON
+     * @see ChestMaterialStore#getChestMaterialSafe(ResourceLocation)
+     */
     private static @Nullable ChestMaterial parseChestMaterial(Map.Entry<ResourceLocation, Resource> entry) {
         try (BufferedReader reader = entry.getValue().openAsReader()) {
             JsonElement jsonElement = JsonParser.parseReader(reader);
@@ -52,23 +74,13 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
         return null;
     }
 
-    private static ResourceLocation parseLocation(ResourceLocation location) {
-        String path = location.getPath();
-        // Remove the start of the path
-        path = Arrays.stream(path.split("/")).toList().getLast();
-        // Remove file extension
-        path = path.split("\\.")[0];
-
-        return location.withPath(path);
-    }
-
     /**
      * Gets the resource location of the first texture for a block with given resource location
      * @param location The resource location of the block to get the texture for
      * @return The resource location of the first texture
      */
     @SuppressWarnings("deprecation") // Can be safely ignored due to being in minecraft core rendering
-    private static @Nullable ResourceLocation textureFromBlock(ResourceLocation location) {
+    public static @Nullable ResourceLocation textureFromBlock(ResourceLocation location) {
         BlockState blockState = BuiltInRegistries.BLOCK.get(location).defaultBlockState();
         BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(blockState);
         // Create random with seed of 42 like vanilla renderer
@@ -85,6 +97,11 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
         return null;
     }
 
+    /**
+     * Looks up a {@link ChestMaterial} in the cache and creates one from the default if it is not present
+     * @param chestMaterialLoc The {@link ResourceLocation} of the chest material to lookup
+     * @return The cached {@link ChestMaterial}
+     */
     public static ChestMaterial getChestMaterialSafe(ResourceLocation chestMaterialLoc) {
         if(chestMaterialLoc == null) return DBVChestMaterialProvider.DEFAULT;
 
@@ -95,7 +112,10 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
             } else {
                 ResourceLocation texture = textureFromBlock(chestMaterialLoc);
                 // Do not cache if texture is null, texture should be searched for again
-                if (texture == null) return DBVChestMaterialProvider.DEFAULT;
+                if (texture == null) {
+                    DBVariants.LOGGER.warn("Block {} appears to have no textures!", chestMaterialLoc);
+                    return DBVChestMaterialProvider.DEFAULT;
+                }
                 // Cache chest material for quicker lookup next time
                 CHEST_MATERIALS.put(chestMaterialLoc, new BlockOverlayChest(texture));
             }
