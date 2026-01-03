@@ -4,6 +4,7 @@ import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
 import dev.perxenic.dbvariants.registry.DBVBlockEntities;
 import dev.perxenic.dbvariants.registry.DBVItems;
 import dev.perxenic.dbvariants.registry.DBVRecipeSerializers;
+import dev.perxenic.dbvariants.util.CollectionHelper;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public class BasicDynamicChestRecipe extends CustomRecipe {
@@ -25,6 +27,23 @@ public class BasicDynamicChestRecipe extends CustomRecipe {
         super(category);
         this.group = group;
         this.ingredient = ingredient;
+    }
+
+    public static ItemStack getStackFromInput(ItemStack input) {
+        ItemStack result = DBVItems.DYNAMIC_CHEST.toStack();
+
+        if (input == null || input.isEmpty()) return ItemStack.EMPTY;
+
+        CompoundTag compoundTag = new CompoundTag();
+        compoundTag.putString("id", DBVBlockEntities.DYNAMIC_CHEST.getKey().location().toString());
+
+        compoundTag.putString(DynamicChestBlockEntity.MATERIAL_TAG, input.getItem().toString());
+
+        result.applyComponents(
+                DataComponentPatch.builder().set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(compoundTag)).build()
+        );
+
+        return result;
     }
 
     @Override
@@ -62,20 +81,10 @@ public class BasicDynamicChestRecipe extends CustomRecipe {
 
     @Override
     public @NotNull ItemStack assemble(@NotNull CraftingInput craftingInput, HolderLookup.@NotNull Provider provider) {
-        ItemStack result = DBVItems.DYNAMIC_CHEST.toStack();
-
         Optional<ItemStack> itemStack = craftingInput.items().stream().filter(filter -> !filter.isEmpty()).findFirst();
         if (itemStack.isEmpty()) return ItemStack.EMPTY;
 
-        CompoundTag compoundTag = new CompoundTag();
-        compoundTag.putString("id", DBVBlockEntities.DYNAMIC_CHEST.getKey().location().toString());
-
-        compoundTag.putString(DynamicChestBlockEntity.MATERIAL_TAG, itemStack.get().getItem().toString());
-
-        result.applyComponents(
-                DataComponentPatch.builder().set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(compoundTag)).build()
-        );
-        return result;
+        return getStackFromInput(itemStack.get());
     }
 
     @Override
@@ -95,5 +104,10 @@ public class BasicDynamicChestRecipe extends CustomRecipe {
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
         return DBVRecipeSerializers.DYNAMIC_CHEST_RECIPE.get();
+    }
+
+    @Override
+    public ItemStack getResultItem(HolderLookup.Provider registries) {
+        return getStackFromInput(CollectionHelper.getFirstArray(ingredient.getItems()));
     }
 }
