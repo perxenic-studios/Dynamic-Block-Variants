@@ -5,5 +5,7 @@
   "dbvariants.configuration.section.dbvariants.common.toml": "Dynamic Block Variants Configs",
   "dbvariants.configuration.section.dbvariants.common.toml.title": "Dynamic Block Variants Configs",
   "dbvariants.configuration.vanillaDefaultChestTexture": "Vanilla Default Chest Texture",
-  "dbvariants.configuration.vanillaDefaultChestTexture.tooltip": "Whether unset materials should default to vanilla chest texture (Requires client reload)"
+  "dbvariants.configuration.vanillaDefaultChestTexture.tooltip": "Whether unset materials should default to vanilla chest texture (Requires client reload)",
+  "dbvariants.configuration.xmasChestRecipe": "Xmas Chest Recipe",
+  "dbvariants.configuration.xmasChestRecipe.tooltip": "Whether a recipe should be added for christmas chests (Requires server reload)"
 }

@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "dbvariants:config",
+      "config_key": "xmasChestRecipe"
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_the_recipe": {

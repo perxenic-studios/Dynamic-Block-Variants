@@ -15,9 +15,14 @@ public class Config {
             .comment("Whether unset materials should default to vanilla chest texture (Requires client reload)")
             .define("vanillaDefaultChestTexture", false);
 
+    public static final ModConfigSpec.BooleanValue XMAS_CHEST_RECIPE = BUILDER
+            .comment("Whether a recipe should be added for christmas chests (Requires server reload)")
+            .define("xmasChestRecipe", true);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 
     public static boolean vanillaDefaultChestTexture;
+    public static boolean xmasChestRecipe;
 
     public static final HashMap<String, Boolean> configDict = new HashMap<>();
 
@@ -25,5 +30,8 @@ public class Config {
     static void onLoad(final ModConfigEvent event) {
         vanillaDefaultChestTexture = VANILLA_DEFAULT_CHEST_TEXTURE.get();
         configDict.put("vanillaDefaultChestTexture", vanillaDefaultChestTexture);
+
+        xmasChestRecipe = XMAS_CHEST_RECIPE.get();
+        configDict.put("xmasChestRecipe", xmasChestRecipe);
     }
 }

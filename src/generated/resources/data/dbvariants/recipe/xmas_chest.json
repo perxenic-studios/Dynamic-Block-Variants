@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "dbvariants:config",
+      "config_key": "xmasChestRecipe"
+    }
+  ],
   "type": "dbvariants:custom_dynamic_chest",
   "category": "building",
   "group": "dynamic_blocks",

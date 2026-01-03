@@ -1,5 +1,6 @@
 package dev.perxenic.dbvariants.datagen;
 
+import dev.perxenic.dbvariants.content.conditions.DBVConfigCondition;
 import dev.perxenic.dbvariants.content.crafting.chest.BasicDynamicChestRecipeBuilder;
 import dev.perxenic.dbvariants.content.crafting.chest.CustomDynamicChestRecipeBuilder;
 import dev.perxenic.dbvariants.registry.DBVItems;
@@ -44,7 +45,7 @@ public class DBVRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('#', Ingredient.of(ItemTags.WOOL))
                 .define('X', Ingredient.of(ItemTags.PLANKS))
                 .group("dynamic_blocks")
-                .save(recipeOutput, dbvLoc("xmas_chest"));
+                .save(recipeOutput.withConditions(new DBVConfigCondition("xmasChestRecipe")), dbvLoc("xmas_chest"));
 
         new ShapelessRecipeBuilder(
                 RecipeCategory.BUILDING_BLOCKS,
