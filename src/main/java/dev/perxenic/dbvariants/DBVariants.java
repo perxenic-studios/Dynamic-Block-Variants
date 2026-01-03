@@ -1,7 +1,6 @@
 package dev.perxenic.dbvariants;
 
 import dev.perxenic.dbvariants.registry.*;
-import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;

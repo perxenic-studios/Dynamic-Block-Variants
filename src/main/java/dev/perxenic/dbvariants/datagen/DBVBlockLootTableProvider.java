@@ -13,7 +13,6 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.crypto.Data;
 import java.util.Set;
 
 public class DBVBlockLootTableProvider extends BlockLootSubProvider {

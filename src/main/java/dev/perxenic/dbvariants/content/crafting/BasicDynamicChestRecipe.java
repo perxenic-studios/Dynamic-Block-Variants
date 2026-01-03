@@ -15,7 +15,6 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 public class BasicDynamicChestRecipe extends CustomRecipe {
@@ -107,7 +106,7 @@ public class BasicDynamicChestRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries) {
+    public @NotNull ItemStack getResultItem(@NotNull HolderLookup.Provider registries) {
         return getStackFromInput(CollectionHelper.getFirstArray(ingredient.getItems()));
     }
 }
