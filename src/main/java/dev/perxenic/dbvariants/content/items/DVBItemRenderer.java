@@ -1,6 +1,7 @@
-package dev.perxenic.dbvariants.content.items.chest;
+package dev.perxenic.dbvariants.content.items;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.perxenic.dbvariants.content.blocks.chest.DynamicChest;
 import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestBlockEntity;
 import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestRenderer;
 import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
@@ -12,21 +13,42 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import org.jetbrains.annotations.NotNull;
 
-public class DynamicChestItemRenderer extends BlockEntityWithoutLevelRenderer {
+public class DVBItemRenderer extends BlockEntityWithoutLevelRenderer {
     private final BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 
-    public DynamicChestItemRenderer() {
+    public DVBItemRenderer() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
         this.blockEntityRenderDispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
     }
 
     @Override
     public void renderByItem(
+            ItemStack stack,
+            @NotNull ItemDisplayContext transform,
+            @NotNull PoseStack poseStack,
+            @NotNull MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay
+    ) {
+        if (!(stack.getItem() instanceof BlockItem item)) return;
+
+        if (item.getBlock() instanceof DynamicChest) renderDynamicChest(
+                stack,
+                transform,
+                poseStack,
+                bufferSource,
+                packedLight,
+                packedOverlay
+        );
+    }
+
+    public void renderDynamicChest(
             ItemStack stack,
             @NotNull ItemDisplayContext transform,
             @NotNull PoseStack poseStack,
