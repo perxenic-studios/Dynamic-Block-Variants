@@ -1,7 +1,7 @@
-package dev.perxenic.dbvariants.client;
+package dev.perxenic.dbvariants;
 
-import dev.perxenic.dbvariants.DBVariants;
-import dev.perxenic.dbvariants.data.ChestMaterialStore;
+import dev.perxenic.dbvariants.content.items.DVBItemExtensions;
+import dev.perxenic.dbvariants.registry.store.ChestMaterialStore;
 import dev.perxenic.dbvariants.registry.DBVItems;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -23,7 +23,7 @@ public class DBVariantsClient {
     @SubscribeEvent
     public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerItem(
-                new DynamicChestItemExtension(),
+                new DVBItemExtensions(),
                 DBVItems.DYNAMIC_CHEST
         );
     }

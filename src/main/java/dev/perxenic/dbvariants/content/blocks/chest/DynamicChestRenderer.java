@@ -1,7 +1,6 @@
-package dev.perxenic.dbvariants.client;
+package dev.perxenic.dbvariants.content.blocks.chest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
 import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -9,11 +8,8 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-@OnlyIn(Dist.CLIENT)
 public class DynamicChestRenderer implements BlockEntityRenderer<DynamicChestBlockEntity> {
     public final ModelPart bottom;
     public final ModelPart lid;
@@ -38,7 +34,9 @@ public class DynamicChestRenderer implements BlockEntityRenderer<DynamicChestBlo
         this.doubleRightBottom = doubleRightModelPart.getChild("bottom");
         this.doubleRightLid = doubleRightModelPart.getChild("lid");
         this.doubleRightLock = doubleRightModelPart.getChild("lock");
-    }@Override
+    }
+
+    @Override
     public void render(@NotNull DynamicChestBlockEntity blockEntity, float partialTick, @NotNull PoseStack stack,
                        @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         ChestMaterial dynamicMaterial = blockEntity.chestMaterial == null ? DBVChestMaterialProvider.DEFAULT : blockEntity.chestMaterial;

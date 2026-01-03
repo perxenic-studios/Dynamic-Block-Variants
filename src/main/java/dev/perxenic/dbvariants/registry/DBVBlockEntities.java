@@ -1,8 +1,8 @@
 package dev.perxenic.dbvariants.registry;
 
 import dev.perxenic.dbvariants.DBVariants;
-import dev.perxenic.dbvariants.client.DynamicChestRenderer;
-import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
+import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestRenderer;
+import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;

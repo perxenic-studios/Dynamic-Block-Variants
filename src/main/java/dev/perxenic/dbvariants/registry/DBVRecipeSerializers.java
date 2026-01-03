@@ -1,7 +1,7 @@
 package dev.perxenic.dbvariants.registry;
 
 import dev.perxenic.dbvariants.DBVariants;
-import dev.perxenic.dbvariants.content.crafting.BasicDynamicChestRecipeSerializer;
+import dev.perxenic.dbvariants.content.crafting.chest.BasicDynamicChestRecipeSerializer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.bus.api.IEventBus;

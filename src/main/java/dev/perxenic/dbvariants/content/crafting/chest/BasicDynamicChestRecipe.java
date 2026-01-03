@@ -1,6 +1,6 @@
-package dev.perxenic.dbvariants.content.crafting;
+package dev.perxenic.dbvariants.content.crafting.chest;
 
-import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
+import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestBlockEntity;
 import dev.perxenic.dbvariants.registry.DBVBlockEntities;
 import dev.perxenic.dbvariants.registry.DBVItems;
 import dev.perxenic.dbvariants.registry.DBVRecipeSerializers;

@@ -1,4 +1,4 @@
-package dev.perxenic.dbvariants.data;
+package dev.perxenic.dbvariants.registry.store;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -22,8 +22,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +34,6 @@ import java.util.function.Predicate;
  * A clientside cache for ChestMaterials to be rendered by the Dynamic Chest
  * @see ChestMaterialStore#getChestMaterialSafe(ResourceLocation)
  */
-@OnlyIn(Dist.CLIENT)
 public class ChestMaterialStore implements ResourceManagerReloadListener {
     /**
      * A Hashmap to cache all chest materials loaded from resources or generated from the default

@@ -1,7 +1,7 @@
-package dev.perxenic.dbvariants.content.blocks;
+package dev.perxenic.dbvariants.content.blocks.chest;
 
 import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
-import dev.perxenic.dbvariants.data.ChestMaterialStore;
+import dev.perxenic.dbvariants.registry.store.ChestMaterialStore;
 import dev.perxenic.dbvariants.registry.DBVBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -16,8 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 public class DynamicChestBlockEntity extends ChestBlockEntity {
@@ -25,14 +23,12 @@ public class DynamicChestBlockEntity extends ChestBlockEntity {
     public static final String MATERIAL_TAG = "dynamic_material";
     public ResourceLocation chestMaterialLoc;
 
-    @OnlyIn(Dist.CLIENT)
     public ChestMaterial chestMaterial;
 
     public DynamicChestBlockEntity(BlockPos pos, BlockState state) {
         super(DBVBlockEntities.DYNAMIC_CHEST.get(), pos, state);
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void updateChestMaterial() {
         chestMaterial = ChestMaterialStore.getChestMaterialSafe(chestMaterialLoc);
     }

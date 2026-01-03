@@ -1,4 +1,4 @@
-package dev.perxenic.dbvariants.content.crafting;
+package dev.perxenic.dbvariants.content.crafting.chest;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

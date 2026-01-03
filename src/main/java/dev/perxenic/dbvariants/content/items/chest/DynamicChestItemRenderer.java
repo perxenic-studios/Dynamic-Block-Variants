@@ -1,7 +1,8 @@
-package dev.perxenic.dbvariants.client;
+package dev.perxenic.dbvariants.content.items.chest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
+import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestBlockEntity;
+import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestRenderer;
 import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
 import net.minecraft.client.Minecraft;
@@ -14,11 +15,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-@OnlyIn(Dist.CLIENT)
 public class DynamicChestItemRenderer extends BlockEntityWithoutLevelRenderer {
     private final BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 

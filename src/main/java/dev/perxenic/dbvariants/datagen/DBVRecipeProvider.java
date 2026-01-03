@@ -1,6 +1,6 @@
 package dev.perxenic.dbvariants.datagen;
 
-import dev.perxenic.dbvariants.content.crafting.BasicDynamicChestRecipeBuilder;
+import dev.perxenic.dbvariants.content.crafting.chest.BasicDynamicChestRecipeBuilder;
 import dev.perxenic.dbvariants.registry.DBVItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;

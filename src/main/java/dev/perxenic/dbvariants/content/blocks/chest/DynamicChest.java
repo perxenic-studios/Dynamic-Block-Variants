@@ -1,4 +1,4 @@
-package dev.perxenic.dbvariants.content.blocks;
+package dev.perxenic.dbvariants.content.blocks.chest;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.ChestBlock;

@@ -1,4 +1,4 @@
-package dev.perxenic.dbvariants.content.crafting;
+package dev.perxenic.dbvariants.content.crafting.chest;
 
 import dev.perxenic.dbvariants.registry.DBVItems;
 import net.minecraft.advancements.Advancement;

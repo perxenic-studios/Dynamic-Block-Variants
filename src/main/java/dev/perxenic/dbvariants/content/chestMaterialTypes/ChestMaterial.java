@@ -2,7 +2,7 @@ package dev.perxenic.dbvariants.content.chestMaterialTypes;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
-import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
+import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestBlockEntity;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.Material;

@@ -1,7 +1,7 @@
 package dev.perxenic.dbvariants.registry;
 
 import dev.perxenic.dbvariants.DBVariants;
-import dev.perxenic.dbvariants.content.blocks.DynamicChest;
+import dev.perxenic.dbvariants.content.blocks.chest.DynamicChest;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
