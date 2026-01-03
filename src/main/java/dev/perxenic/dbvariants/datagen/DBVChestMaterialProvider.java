@@ -19,7 +19,10 @@ public class DBVChestMaterialProvider extends JsonCodecProvider<ChestMaterial> {
     public static final String DIRECTORY = MODID + "/chest_material";
 
     public static final ResourceLocation DEFAULT_KEY = dbvLoc("default");
-    public static final ChestMaterial DEFAULT = new VanillaChest(mcLoc("normal"));
+    public static final VanillaChest DEFAULT = new VanillaChest(mcLoc("normal"));
+
+    public static final ResourceLocation XMAS_KEY = dbvLoc("xmas");
+    public static final VanillaChest XMAS = new VanillaChest(mcLoc("christmas"));
 
     public DBVChestMaterialProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
         super(output, PackOutput.Target.RESOURCE_PACK, DIRECTORY, PackType.CLIENT_RESOURCES, DBVRegistries.CHEST_MATERIAL_CODEC, lookupProvider, MODID, existingFileHelper);
@@ -28,5 +31,6 @@ public class DBVChestMaterialProvider extends JsonCodecProvider<ChestMaterial> {
     @Override
     protected void gather() {
         this.unconditional(DEFAULT_KEY, DEFAULT);
+        this.unconditional(XMAS_KEY, XMAS);
     }
 }

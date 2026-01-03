@@ -102,7 +102,7 @@ public class BasicDynamicChestRecipe extends CustomRecipe {
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return DBVRecipeSerializers.DYNAMIC_CHEST_RECIPE.get();
+        return DBVRecipeSerializers.BASIC_DYNAMIC_CHEST_RECIPE.get();
     }
 
     @Override

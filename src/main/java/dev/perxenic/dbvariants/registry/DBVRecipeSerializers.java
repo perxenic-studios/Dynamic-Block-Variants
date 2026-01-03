@@ -2,6 +2,7 @@ package dev.perxenic.dbvariants.registry;
 
 import dev.perxenic.dbvariants.DBVariants;
 import dev.perxenic.dbvariants.content.crafting.chest.BasicDynamicChestRecipeSerializer;
+import dev.perxenic.dbvariants.content.crafting.chest.CustomDynamicChestRecipeSerializer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.bus.api.IEventBus;
@@ -13,10 +14,16 @@ public class DBVRecipeSerializers {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
             DeferredRegister.create(Registries.RECIPE_SERIALIZER, DBVariants.MODID);
 
-    public static final Supplier<BasicDynamicChestRecipeSerializer> DYNAMIC_CHEST_RECIPE =
+    public static final Supplier<BasicDynamicChestRecipeSerializer> BASIC_DYNAMIC_CHEST_RECIPE =
             RECIPE_SERIALIZERS.register(
                     "basic_dynamic_chest",
                     BasicDynamicChestRecipeSerializer::new
+            );
+
+    public static final Supplier<CustomDynamicChestRecipeSerializer> CUSTOM_DYNAMIC_CHEST_RECIPE =
+            RECIPE_SERIALIZERS.register(
+                    "custom_dynamic_chest",
+                    CustomDynamicChestRecipeSerializer::new
             );
 
     public static void register(IEventBus eventBus) {

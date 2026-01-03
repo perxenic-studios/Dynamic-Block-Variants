@@ -1,6 +1,7 @@
 package dev.perxenic.dbvariants.datagen;
 
 import dev.perxenic.dbvariants.content.crafting.chest.BasicDynamicChestRecipeBuilder;
+import dev.perxenic.dbvariants.content.crafting.chest.CustomDynamicChestRecipeBuilder;
 import dev.perxenic.dbvariants.registry.DBVItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -32,6 +33,18 @@ public class DBVRecipeProvider extends RecipeProvider implements IConditionBuild
         )
                 .group("dynamic_blocks")
                 .save(recipeOutput, dbvLoc("default_dynamic_chest"));
+
+        new CustomDynamicChestRecipeBuilder(
+                RecipeCategory.BUILDING_BLOCKS,
+                DBVChestMaterialProvider.XMAS_KEY
+        )
+                .pattern("XXX")
+                .pattern("X#X")
+                .pattern("XXX")
+                .define('#', Ingredient.of(ItemTags.WOOL))
+                .define('X', Ingredient.of(ItemTags.PLANKS))
+                .group("dynamic_blocks")
+                .save(recipeOutput, dbvLoc("xmas_chest"));
 
         new ShapelessRecipeBuilder(
                 RecipeCategory.BUILDING_BLOCKS,
