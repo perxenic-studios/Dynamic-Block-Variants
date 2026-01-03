@@ -17,6 +17,7 @@ public class DBVBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, DBVariants.MODID);
 
+    @SuppressWarnings("DataFlowIssue") // NeoForge advises passing null to build
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DynamicChestBlockEntity>> DYNAMIC_CHEST =
             BLOCK_ENTITY_TYPES.register("dynamic_chest", () -> BlockEntityType.Builder.of(
                     DynamicChestBlockEntity::new,
