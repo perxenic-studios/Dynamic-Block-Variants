@@ -27,7 +27,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import static dev.perxenic.dbvariants.DBVariants.dbvLoc;
+import static dev.perxenic.dbvariants.util.LocationHelper.dbvLoc;
 
 public class BlockOverlayChest extends ChestMaterial{
     public static final MapCodec<BlockOverlayChest> CODEC = RecordCodecBuilder.mapCodec(inst ->

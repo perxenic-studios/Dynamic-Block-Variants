@@ -12,7 +12,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 
 import java.util.function.Function;
 
-import static dev.perxenic.dbvariants.DBVariants.dbvLoc;
+import static dev.perxenic.dbvariants.util.LocationHelper.dbvLoc;
 
 @EventBusSubscriber
 public class DBVRegistries {

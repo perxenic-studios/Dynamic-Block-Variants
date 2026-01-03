@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-import static dev.perxenic.dbvariants.DBVariants.dbvLoc;
+import static dev.perxenic.dbvariants.util.LocationHelper.dbvLoc;
 
 public class DBVRecipeProvider extends RecipeProvider implements IConditionBuilder {
     public DBVRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

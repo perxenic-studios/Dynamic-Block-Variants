@@ -12,7 +12,8 @@ import net.neoforged.neoforge.common.data.JsonCodecProvider;
 
 import java.util.concurrent.CompletableFuture;
 
-import static dev.perxenic.dbvariants.DBVariants.*;
+import static dev.perxenic.dbvariants.DBVariants.MODID;
+import static dev.perxenic.dbvariants.util.LocationHelper.*;
 
 public class DBVChestMaterialProvider extends JsonCodecProvider<ChestMaterial> {
     public static final String DIRECTORY = MODID + "/chest_material";

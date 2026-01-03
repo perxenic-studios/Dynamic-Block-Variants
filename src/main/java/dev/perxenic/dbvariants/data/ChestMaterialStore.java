@@ -9,7 +9,7 @@ import dev.perxenic.dbvariants.content.chestMaterialTypes.BlockOverlayChest;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
 import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVRegistries;
-import dev.perxenic.dbvariants.util.PathHelper;
+import dev.perxenic.dbvariants.util.LocationHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.SpriteContents;
@@ -53,7 +53,7 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
         for (Map.Entry<ResourceLocation, Resource> entry : resourceManager.listResources(DBVChestMaterialProvider.DIRECTORY,
                 location -> location.getPath().endsWith(".json")).entrySet()) {
             ChestMaterial material = parseChestMaterial(entry);
-            if (material != null) CHEST_MATERIALS.put(PathHelper.getFileID(entry.getKey()), material);
+            if (material != null) CHEST_MATERIALS.put(LocationHelper.getFileID(entry.getKey()), material);
         }
     }
 
