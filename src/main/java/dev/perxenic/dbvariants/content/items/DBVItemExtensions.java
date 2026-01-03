@@ -4,8 +4,8 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 
-public class DVBItemExtensions implements IClientItemExtensions {
-    private final DVBItemRenderer itemRenderer = new DVBItemRenderer();
+public class DBVItemExtensions implements IClientItemExtensions {
+    private final DBVItemRenderer itemRenderer = new DBVItemRenderer();
 
     @Override
     public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {

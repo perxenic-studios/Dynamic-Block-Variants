@@ -19,10 +19,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import org.jetbrains.annotations.NotNull;
 
-public class DVBItemRenderer extends BlockEntityWithoutLevelRenderer {
+public class DBVItemRenderer extends BlockEntityWithoutLevelRenderer {
     private final BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 
-    public DVBItemRenderer() {
+    public DBVItemRenderer() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
         this.blockEntityRenderDispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
     }
