@@ -19,7 +19,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * An item renderer that detects the item type and selects the correct renderer for the dynamic blocks
+ */
 public class DBVItemRenderer extends BlockEntityWithoutLevelRenderer {
+    /**
+     * The {@link BlockEntityRenderDispatcher} instance cached from the {@link Minecraft} instance
+     * @see Minecraft#getBlockEntityRenderDispatcher()
+     */
     private final BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 
     public DBVItemRenderer() {
@@ -27,6 +34,15 @@ public class DBVItemRenderer extends BlockEntityWithoutLevelRenderer {
         this.blockEntityRenderDispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
     }
 
+    /**
+     * Detects the item in the {@link ItemStack} and renders using correct method
+     * @param stack The {@link ItemStack} to render for
+     * @param transform The {@link ItemDisplayContext} to transform the render
+     * @param poseStack The {@link PoseStack} that stores transforms
+     * @param bufferSource The {@link MultiBufferSource} to render to
+     * @param packedLight The light that the item should be rendered with
+     * @param packedOverlay The packed overlay for the item
+     */
     @Override
     public void renderByItem(
             ItemStack stack,
@@ -48,6 +64,16 @@ public class DBVItemRenderer extends BlockEntityWithoutLevelRenderer {
         );
     }
 
+    /**
+     * Renders a dynamic chest using the material renderer
+     * Circumvents the block entity renderer to pass an isItem flag to get outlines to render correctly
+     * @param stack The {@link ItemStack} to render for
+     * @param transform The {@link ItemDisplayContext} to transform the render
+     * @param poseStack The {@link PoseStack} that stores transforms
+     * @param bufferSource The {@link MultiBufferSource} to render to
+     * @param packedLight The light that the item should be rendered with
+     * @param packedOverlay The packed overlay for the item
+     */
     public void renderDynamicChest(
             ItemStack stack,
             @NotNull ItemDisplayContext transform,
