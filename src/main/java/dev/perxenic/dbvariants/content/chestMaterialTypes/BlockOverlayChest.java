@@ -32,7 +32,7 @@ import static dev.perxenic.dbvariants.DBVariants.dbvLoc;
 public class BlockOverlayChest extends ChestMaterial{
     public static final MapCodec<BlockOverlayChest> CODEC = RecordCodecBuilder.mapCodec(inst ->
             inst.group(
-                ResourceLocation.CODEC.fieldOf("block_name").forGetter(s -> s.blockName)
+                ResourceLocation.CODEC.fieldOf("block_name").forGetter(s -> s.blockTexture)
             ).apply(inst, BlockOverlayChest::new));
 
     public final Material blockMaterial;
@@ -40,13 +40,13 @@ public class BlockOverlayChest extends ChestMaterial{
     public final Material leftOverlayMaterial;
     public final Material rightOverlayMaterial;
 
-    public final ResourceLocation blockName;
+    public final ResourceLocation blockTexture;
 
     public BlockOverlayChest(ResourceLocation blockName) {
-        this.blockName = blockName;
+        this.blockTexture = blockName;
         blockMaterial = new Material(
                 ResourceLocation.withDefaultNamespace("textures/atlas/blocks.png"),
-                blockName.withPrefix("block/")
+                blockName
         );
         mainOverlayMaterial = newMainMaterial(dbvLoc("overlay"));
         leftOverlayMaterial = newLeftMaterial(dbvLoc("overlay"));
