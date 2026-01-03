@@ -7,6 +7,7 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -17,16 +18,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
+/**
+ * A {@link RecipeBuilder} for a {@link BasicDynamicChestRecipe}
+ */
 public class BasicDynamicChestRecipeBuilder implements RecipeBuilder {
     protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
     @Nullable
     protected String group;
 
-    protected final CraftingBookCategory category;
+    protected final RecipeCategory category;
     protected final Ingredient ingredient;
 
-    public BasicDynamicChestRecipeBuilder(CraftingBookCategory category, Ingredient ingredient) {
+    public BasicDynamicChestRecipeBuilder(RecipeCategory category, Ingredient ingredient) {
         this.category = category;
         this.ingredient = ingredient;
     }
@@ -56,7 +61,7 @@ public class BasicDynamicChestRecipeBuilder implements RecipeBuilder {
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(advancement::addCriterion);
 
-        BasicDynamicChestRecipe recipe = new BasicDynamicChestRecipe(this.category, this.ingredient);
+        BasicDynamicChestRecipe recipe = new BasicDynamicChestRecipe(Objects.requireNonNullElse(this.group, ""), RecipeBuilder.determineBookCategory(this.category), this.ingredient);
 
         output.accept(location, recipe, advancement.build(location.withPrefix("recipes/")));
     }

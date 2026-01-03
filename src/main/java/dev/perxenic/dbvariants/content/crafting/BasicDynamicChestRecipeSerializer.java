@@ -1,8 +1,10 @@
 package dev.perxenic.dbvariants.content.crafting;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -17,6 +19,7 @@ public class BasicDynamicChestRecipeSerializer implements RecipeSerializer<Basic
      * The {@link MapCodec} for the {@link BasicDynamicChestRecipe}, mainly used for parsing JSON
      */
     public static final MapCodec<BasicDynamicChestRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+            Codec.STRING.fieldOf("group").forGetter(BasicDynamicChestRecipe::getGroup),
             CraftingBookCategory.CODEC.fieldOf("category").forGetter(BasicDynamicChestRecipe::category),
             Ingredient.CODEC.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient)
     ).apply(inst, BasicDynamicChestRecipe::new));
@@ -25,11 +28,11 @@ public class BasicDynamicChestRecipeSerializer implements RecipeSerializer<Basic
      * The {@link StreamCodec} for the {@link BasicDynamicChestRecipe}, used for parsing streams
      */
     public static final StreamCodec<RegistryFriendlyByteBuf, BasicDynamicChestRecipe> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.STRING_UTF8, BasicDynamicChestRecipe::getGroup,
             CraftingBookCategory.STREAM_CODEC, BasicDynamicChestRecipe::category,
             Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.ingredient,
             BasicDynamicChestRecipe::new
     );
-
 
     /**
      * Returns {@link BasicDynamicChestRecipeSerializer#CODEC}

@@ -1,6 +1,7 @@
 {
   "type": "dbvariants:dynamic_chest",
   "category": "building",
+  "group": "dynamic_blocks",
   "ingredient": {
     "tag": "minecraft:planks"
   }

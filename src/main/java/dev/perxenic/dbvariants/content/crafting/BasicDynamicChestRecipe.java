@@ -18,10 +18,12 @@ import java.util.Optional;
 
 public class BasicDynamicChestRecipe extends CustomRecipe {
 
+    public final String group;
     public final Ingredient ingredient;
 
-    public BasicDynamicChestRecipe(CraftingBookCategory category, Ingredient ingredient) {
+    public BasicDynamicChestRecipe(String group, CraftingBookCategory category, Ingredient ingredient) {
         super(category);
+        this.group = group;
         this.ingredient = ingredient;
     }
 
@@ -79,6 +81,11 @@ public class BasicDynamicChestRecipe extends CustomRecipe {
     @Override
     public boolean canCraftInDimensions(int width, int height) {
         return width >= 3 && height >= 3;
+    }
+
+    @Override
+    public @NotNull String getGroup() {
+        return group;
     }
 
     @Override
