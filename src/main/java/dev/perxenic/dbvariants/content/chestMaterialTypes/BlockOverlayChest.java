@@ -7,7 +7,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
-import dev.perxenic.dbvariants.content.client.util.EntityRendererHelper;
+import dev.perxenic.dbvariants.client.util.EntityRendererHelper;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

@@ -1,4 +1,4 @@
-package dev.perxenic.dbvariants.content.client;
+package dev.perxenic.dbvariants.client;
 
 import dev.perxenic.dbvariants.DBVariants;
 import dev.perxenic.dbvariants.data.ChestMaterialStore;

@@ -1,7 +1,6 @@
-package dev.perxenic.dbvariants.content.client;
+package dev.perxenic.dbvariants.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.perxenic.dbvariants.DBVariants;
 import dev.perxenic.dbvariants.content.blocks.DynamicChestBlockEntity;
 import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVBlocks;

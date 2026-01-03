@@ -1,6 +1,5 @@
-package dev.perxenic.dbvariants.content.client;
+package dev.perxenic.dbvariants.client;
 
-import dev.perxenic.dbvariants.DBVariants;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
