@@ -21,7 +21,7 @@ public class BasicDynamicChestRecipeSerializer implements RecipeSerializer<Basic
     public static final MapCodec<BasicDynamicChestRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             Codec.STRING.fieldOf("group").forGetter(BasicDynamicChestRecipe::getGroup),
             CraftingBookCategory.CODEC.fieldOf("category").forGetter(BasicDynamicChestRecipe::category),
-            Ingredient.CODEC.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient)
+            Ingredient.CODEC.fieldOf("ingredient").forGetter(BasicDynamicChestRecipe::getIngredient)
     ).apply(inst, BasicDynamicChestRecipe::new));
 
     /**
@@ -30,7 +30,7 @@ public class BasicDynamicChestRecipeSerializer implements RecipeSerializer<Basic
     public static final StreamCodec<RegistryFriendlyByteBuf, BasicDynamicChestRecipe> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.STRING_UTF8, BasicDynamicChestRecipe::getGroup,
             CraftingBookCategory.STREAM_CODEC, BasicDynamicChestRecipe::category,
-            Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.ingredient,
+            Ingredient.CONTENTS_STREAM_CODEC, BasicDynamicChestRecipe::getIngredient,
             BasicDynamicChestRecipe::new
     );
 

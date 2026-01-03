@@ -88,6 +88,10 @@ public class BasicDynamicChestRecipe extends CustomRecipe {
         return group;
     }
 
+    public @NotNull Ingredient getIngredient() {
+        return ingredient;
+    }
+
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
         return DBVRecipeSerializers.DYNAMIC_CHEST_RECIPE.get();
