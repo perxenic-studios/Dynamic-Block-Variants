@@ -36,13 +36,13 @@ public class BasicDynamicChestRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public @NotNull RecipeBuilder unlockedBy(@NotNull String name, @NotNull Criterion<?> criterion) {
+    public @NotNull BasicDynamicChestRecipeBuilder unlockedBy(@NotNull String name, @NotNull Criterion<?> criterion) {
         this.criteria.put(name, criterion);
         return this;
     }
 
     @Override
-    public @NotNull RecipeBuilder group(@Nullable String group) {
+    public @NotNull BasicDynamicChestRecipeBuilder group(@Nullable String group) {
         this.group = group;
         return this;
     }
