@@ -1,5 +1,5 @@
 {
-  "type": "dbvariants:dynamic_chest",
+  "type": "dbvariants:basic_dynamic_chest",
   "category": "building",
   "group": "dynamic_blocks",
   "ingredient": {

@@ -15,7 +15,7 @@ public class DBVRecipeSerializers {
 
     public static final Supplier<BasicDynamicChestRecipeSerializer> DYNAMIC_CHEST_RECIPE =
             RECIPE_SERIALIZERS.register(
-                    "dynamic_chest",
+                    "basic_dynamic_chest",
                     BasicDynamicChestRecipeSerializer::new
             );
 
