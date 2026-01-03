@@ -9,12 +9,21 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The class that stores the codecs for a {@link BasicDynamicChestRecipe}
+ */
 public class BasicDynamicChestRecipeSerializer implements RecipeSerializer<BasicDynamicChestRecipe> {
+    /**
+     * The {@link MapCodec} for the {@link BasicDynamicChestRecipe}, mainly used for parsing JSON
+     */
     public static final MapCodec<BasicDynamicChestRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             CraftingBookCategory.CODEC.fieldOf("category").forGetter(BasicDynamicChestRecipe::category),
             Ingredient.CODEC.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient)
     ).apply(inst, BasicDynamicChestRecipe::new));
 
+    /**
+     * The {@link StreamCodec} for the {@link BasicDynamicChestRecipe}, used for parsing streams
+     */
     public static final StreamCodec<RegistryFriendlyByteBuf, BasicDynamicChestRecipe> STREAM_CODEC = StreamCodec.composite(
             CraftingBookCategory.STREAM_CODEC, BasicDynamicChestRecipe::category,
             Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.ingredient,
@@ -22,11 +31,19 @@ public class BasicDynamicChestRecipeSerializer implements RecipeSerializer<Basic
     );
 
 
+    /**
+     * Returns {@link BasicDynamicChestRecipeSerializer#CODEC}
+     * @return The {@link MapCodec} for the {@link BasicDynamicChestRecipe}, mainly used for parsing JSON
+     */
     @Override
     public @NotNull MapCodec<BasicDynamicChestRecipe> codec() {
         return CODEC;
     }
 
+    /**
+     * Returns {@link BasicDynamicChestRecipeSerializer#STREAM_CODEC}
+     * @return The {@link StreamCodec} for the {@link BasicDynamicChestRecipe}, used for parsing streams
+     */
     @Override
     public @NotNull StreamCodec<RegistryFriendlyByteBuf, BasicDynamicChestRecipe> streamCodec() {
         return STREAM_CODEC;
