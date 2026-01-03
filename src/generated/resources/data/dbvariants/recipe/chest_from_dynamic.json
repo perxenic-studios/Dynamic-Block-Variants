@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "undynamic",
+  "ingredients": [
+    {
+      "item": "dbvariants:dynamic_chest"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:chest"
+  }
+}
