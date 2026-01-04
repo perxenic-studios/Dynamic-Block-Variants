@@ -9,6 +9,8 @@ import java.util.Arrays;
  * Helper class to provide utilities for {@link ResourceLocation}s
  */
 public class LocationHelper {
+    public static final ResourceLocation BLOCK_SHEET = ResourceLocation.withDefaultNamespace("textures/atlas/blocks.png");
+
     /**
      * Create a {@link ResourceLocation} with DBVariant's Mod ID
      * @param path Path of the {@link ResourceLocation}

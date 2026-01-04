@@ -287,6 +287,7 @@ public class EntityRendererHelper {
      * @param packedOverlay Overlay integer
      * @param packedLight Light integer
      * @param disabledSides Array of disabled sides (right, left, bottom, top, back, front)
+     * @param color The tint color
      */
     public static void drawInsetCube(
             VertexConsumer vc,
@@ -295,7 +296,8 @@ public class EntityRendererHelper {
             Vector3f size,
             int packedOverlay,
             int packedLight,
-            boolean[] disabledSides
+            boolean[] disabledSides,
+            int color
     ) {
         // Right
         if (!disabledSides[0]) {
@@ -305,7 +307,7 @@ public class EntityRendererHelper {
                     new Vector2f(size.z, size.y),
                     new Vector2f(start.z, 16f - start.y - size.y),
                     16f,
-                    packedLight, packedOverlay, 0xFFFFFFFF
+                    packedLight, packedOverlay, color
             );
         }
 
@@ -317,7 +319,7 @@ public class EntityRendererHelper {
                     new Vector2f(size.z, size.y),
                     new Vector2f(start.z, 16f - start.y - size.y),
                     16f,
-                    packedLight, packedOverlay, 0xFFFFFFFF
+                    packedLight, packedOverlay, color
             );
         }
 
@@ -329,7 +331,7 @@ public class EntityRendererHelper {
                     new Vector2f(size.x, size.z),
                     new Vector2f(start.x, 16f - start.z - size.z),
                     16f,
-                    packedLight, packedOverlay, 0xFFFFFFFF
+                    packedLight, packedOverlay, color
             );
         }
 
@@ -341,7 +343,7 @@ public class EntityRendererHelper {
                     new Vector2f(size.x, size.z),
                     new Vector2f(start.x, 16f - start.z - size.z),
                     16f,
-                    packedLight, packedOverlay, 0xFFFFFFFF
+                    packedLight, packedOverlay, color
             );
         }
 
@@ -353,7 +355,7 @@ public class EntityRendererHelper {
                     new Vector2f(size.x, size.y),
                     new Vector2f(16f - start.x - size.x, 16f - start.y - size.y),
                     16f,
-                    packedLight, packedOverlay, 0xFFFFFFFF
+                    packedLight, packedOverlay, color
             );
         }
 
@@ -365,9 +367,32 @@ public class EntityRendererHelper {
                     new Vector2f(size.x, size.y),
                     new Vector2f(start.x, 16f - start.y - size.y),
                     16f,
-                    packedLight, packedOverlay, 0xFFFFFFFF
+                    packedLight, packedOverlay, color
             );
         }
+    }
+
+    /**
+     * Draws a cube where UVs are determined by position in block and color is set to 0xFFFFFFFF
+     * @param vc Vertex consumer to draw to
+     * @param stack Pose stack with transforms
+     * @param start Start coordinate
+     * @param size Cube size
+     * @param packedOverlay Overlay integer
+     * @param packedLight Light integer
+     * @param disabledSides Array of disabled sides (right, left, bottom, top, back, front)
+     * @see EntityRendererHelper#drawInsetCube(VertexConsumer, PoseStack, Vector3f, Vector3f, int, int, boolean[], int)
+     */
+    public static void drawInsetCube(
+            VertexConsumer vc,
+            PoseStack stack,
+            Vector3f start,
+            Vector3f size,
+            int packedOverlay,
+            int packedLight,
+            boolean[] disabledSides
+    ) {
+        drawInsetCube(vc, stack, start, size, packedOverlay, packedLight, disabledSides, 0xFFFFFFFF);
     }
 
     /**

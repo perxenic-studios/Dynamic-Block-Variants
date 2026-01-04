@@ -39,9 +39,8 @@ public interface IBarrelMaterial extends IMaterial {
 
         stack.pushPose();
 
-        float yRot = blockstate.getValue(DynamicBarrel.FACING).toYRot();
         stack.translate(0.5F, 0.5F, 0.5F);
-        stack.mulPose(Axis.YP.rotationDegrees(-yRot));
+        stack.mulPose(blockstate.getValue(DynamicBarrel.FACING).getRotation());
         stack.translate(-0.5F, -0.5F, -0.5F);
 
         renderBody(

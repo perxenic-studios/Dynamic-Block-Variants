@@ -8,10 +8,10 @@ import dev.perxenic.dbvariants.registry.store.MaterialStore;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 
-public class BarrelMaterialHelper {
-    public static final ResourceLocation BLOCK_SHEET = ResourceLocation.withDefaultNamespace("textures/atlas/blocks.png");
+import static dev.perxenic.dbvariants.util.LocationHelper.BLOCK_SHEET;
 
-    public static IBarrelMaterial getDefaultMaterial(ResourceLocation wantedMaterial) {
+public class BarrelMaterialHelper {
+public static IBarrelMaterial getDefaultMaterial(ResourceLocation wantedMaterial) {
         if (Config.vanillaDefaultBarrelTexture) {
             return DBVMaterialProvider.DEFAULT_BARREL;
         } else {
@@ -35,6 +35,14 @@ public class BarrelMaterialHelper {
 
     public static Material newTopMaterial(ResourceLocation barrelName) {
         return new Material(BLOCK_SHEET, newTopLoc(barrelName));
+    }
+
+    public static ResourceLocation newTopOpenLoc(ResourceLocation barrelName) {
+        return barrelName.withPrefix("block/").withSuffix("_top_open");
+    }
+
+    public static Material newTopOpenMaterial(ResourceLocation barrelName) {
+        return new Material(BLOCK_SHEET, newTopOpenLoc(barrelName));
     }
 
     public static ResourceLocation newBottomLoc(ResourceLocation barrelName) {

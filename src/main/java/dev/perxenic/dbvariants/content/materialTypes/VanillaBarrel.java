@@ -9,16 +9,10 @@ import dev.perxenic.dbvariants.content.blocks.barrel.DynamicBarrel;
 import dev.perxenic.dbvariants.content.blocks.barrel.DynamicBarrelBlockEntity;
 import dev.perxenic.dbvariants.content.materialTypes.interfaces.IBarrelMaterial;
 import dev.perxenic.dbvariants.util.EntityRendererHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.BarrelBlock;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.RenderTypeHelper;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -33,8 +27,17 @@ public class VanillaBarrel implements IBarrelMaterial {
 
     public final ResourceLocation barrelName;
 
+    public final Material mainMaterial;
+    public final Material bottomMaterial;
+    public final Material topMaterial;
+    public final Material topOpenMaterial;
+
     public VanillaBarrel(ResourceLocation barrelName) {
         this.barrelName = barrelName;
+        this.mainMaterial = newMainMaterial(barrelName);
+        this.bottomMaterial = newBottomMaterial(barrelName);
+        this.topMaterial = newTopMaterial(barrelName);
+        this.topOpenMaterial = newTopOpenMaterial(barrelName);
     }
 
     @Override
@@ -52,7 +55,6 @@ public class VanillaBarrel implements IBarrelMaterial {
     public void renderBody(@NotNull DynamicBarrelBlockEntity blockEntity, float partialTick, @NotNull PoseStack stack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean isItem) {
         stack.pushPose();
 
-        Material mainMaterial = newMainMaterial(barrelName);
         VertexConsumer mainVertexConsumer = mainMaterial.buffer(bufferSource, RenderType::entitySolid);
 
         EntityRendererHelper.drawInsetCube(
@@ -68,7 +70,6 @@ public class VanillaBarrel implements IBarrelMaterial {
                 }
         );
 
-        Material bottomMaterial = newBottomMaterial(barrelName);
         VertexConsumer bottomVertexConsumer = bottomMaterial.buffer(bufferSource, RenderType::entitySolid);
 
         EntityRendererHelper.drawNegYQuad(
@@ -83,8 +84,10 @@ public class VanillaBarrel implements IBarrelMaterial {
                 0xFFFFFFFF
         );
 
-        Material topMaterial = newTopMaterial(barrelName);
-        VertexConsumer topVertexConsumer = topMaterial.buffer(bufferSource, RenderType::entitySolid);
+        VertexConsumer topVertexConsumer = blockEntity.getBlockState().getValue(DynamicBarrel.OPEN)
+                ? topOpenMaterial.buffer(bufferSource, RenderType::entitySolid)
+                : topMaterial.buffer(bufferSource, RenderType::entitySolid);
+
 
         EntityRendererHelper.drawYQuad(
                 topVertexConsumer,

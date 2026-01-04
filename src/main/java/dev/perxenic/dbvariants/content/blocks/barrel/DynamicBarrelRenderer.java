@@ -1,7 +1,6 @@
 package dev.perxenic.dbvariants.content.blocks.barrel;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.perxenic.dbvariants.DBVariants;
 import dev.perxenic.dbvariants.content.materialTypes.interfaces.IBarrelMaterial;
 import dev.perxenic.dbvariants.datagen.DBVMaterialProvider;
 import net.minecraft.client.renderer.MultiBufferSource;

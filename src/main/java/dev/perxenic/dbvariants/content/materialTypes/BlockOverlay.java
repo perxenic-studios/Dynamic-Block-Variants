@@ -2,12 +2,19 @@ package dev.perxenic.dbvariants.content.materialTypes;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.perxenic.dbvariants.DBVariants;
+import dev.perxenic.dbvariants.content.blocks.barrel.DynamicBarrel;
+import dev.perxenic.dbvariants.content.blocks.barrel.DynamicBarrelBlockEntity;
 import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestBlockEntity;
+import dev.perxenic.dbvariants.content.materialTypes.interfaces.IBarrelMaterial;
 import dev.perxenic.dbvariants.content.materialTypes.interfaces.IChestMaterial;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
 import dev.perxenic.dbvariants.util.EntityRendererHelper;
+import dev.perxenic.dbvariants.util.material.BarrelMaterialHelper;
+import dev.perxenic.dbvariants.util.material.ChestMaterialHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.Material;
@@ -15,6 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import org.jetbrains.annotations.NotNull;
@@ -22,37 +30,165 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import static dev.perxenic.dbvariants.util.material.ChestMaterialHelper.*;
-
+import static dev.perxenic.dbvariants.util.LocationHelper.BLOCK_SHEET;
 import static dev.perxenic.dbvariants.util.LocationHelper.dbvLoc;
 
-public class BlockOverlay implements IChestMaterial {
+public class BlockOverlay implements IChestMaterial, IBarrelMaterial {
     public static final MapCodec<BlockOverlay> CODEC = RecordCodecBuilder.mapCodec(inst ->
             inst.group(
-                ResourceLocation.CODEC.fieldOf("block_name").forGetter(s -> s.blockTexture)
+                    ResourceLocation.CODEC.fieldOf("block_name").forGetter(s -> s.blockTexture),
+                    Codec.INT.fieldOf("color").forGetter(s -> s.color)
             ).apply(inst, BlockOverlay::new));
 
     public final Material blockMaterial;
-    public final Material mainOverlayMaterial;
-    public final Material leftOverlayMaterial;
-    public final Material rightOverlayMaterial;
+
+    public final Material reinforcementMaterial;
+    public final Material mainBarrelOverlayMaterial;
+    public final Material bottomBarrelOverlayMaterial;
+    public final Material topBarrelOverlayMaterial;
+    public final Material topOpenBarrelOverlayMaterial;
+
+    public final Material mainChestOverlayMaterial;
+    public final Material leftChestOverlayMaterial;
+    public final Material rightChestOverlayMaterial;
 
     public final ResourceLocation blockTexture;
+    public final int color;
 
-    public BlockOverlay(ResourceLocation blockName) {
+    public BlockOverlay(ResourceLocation blockName, int color) {
         this.blockTexture = blockName;
-        blockMaterial = new Material(
-                ResourceLocation.withDefaultNamespace("textures/atlas/blocks.png"),
-                blockName
-        );
-        mainOverlayMaterial = newMainMaterial(dbvLoc("overlay"));
-        leftOverlayMaterial = newLeftMaterial(dbvLoc("overlay"));
-        rightOverlayMaterial = newRightMaterial(dbvLoc("overlay"));
+        this.color = color;
+        this.blockMaterial = new Material(BLOCK_SHEET, blockName);
+        this.reinforcementMaterial = new Material(BLOCK_SHEET, dbvLoc("block/barrel/grayscale_reinforcement"));
+
+        ResourceLocation barrelOverlayLocation = dbvLoc("barrel/overlay");
+        this.mainBarrelOverlayMaterial = BarrelMaterialHelper.newMainMaterial(barrelOverlayLocation);
+        this.bottomBarrelOverlayMaterial = BarrelMaterialHelper.newBottomMaterial(barrelOverlayLocation);
+        this.topBarrelOverlayMaterial = BarrelMaterialHelper.newTopMaterial(barrelOverlayLocation);
+        this.topOpenBarrelOverlayMaterial = BarrelMaterialHelper.newTopOpenMaterial(barrelOverlayLocation);
+
+        ResourceLocation chestOverlayLocation = dbvLoc("overlay");
+        this.mainChestOverlayMaterial = ChestMaterialHelper.newMainMaterial(chestOverlayLocation);
+        this.leftChestOverlayMaterial = ChestMaterialHelper.newLeftMaterial(chestOverlayLocation);
+        this.rightChestOverlayMaterial = ChestMaterialHelper.newRightMaterial(chestOverlayLocation);
     }
 
     @Override
-    public MapCodec<? extends IChestMaterial> codec() {
+    public MapCodec<? extends BlockOverlay> codec() {
         return CODEC;
+    }
+
+    @Override
+    public void render(@NotNull BlockEntity blockEntity, float partialTick, @NotNull PoseStack stack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean isItem) {
+        if (blockEntity instanceof DynamicBarrelBlockEntity barrelBlockEntity) {
+            renderBarrel(barrelBlockEntity, partialTick, stack, bufferSource, packedLight, packedOverlay, isItem);
+        } else if (blockEntity instanceof DynamicChestBlockEntity chestBlockEntity) {
+            renderChest(chestBlockEntity, partialTick, stack, bufferSource, packedLight, packedOverlay, isItem);
+        }
+    }
+
+    @Override
+    public void renderBody(@NotNull DynamicBarrelBlockEntity blockEntity, float partialTick, @NotNull PoseStack stack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean isItem) {
+        stack.pushPose();
+
+        VertexConsumer mainVertexConsumer = blockMaterial.buffer(bufferSource, RenderType::entitySolid);
+
+        EntityRendererHelper.drawInsetCube(
+                mainVertexConsumer,
+                stack,
+                new Vector3f(0f),
+                new Vector3f(16f),
+                packedOverlay,
+                packedLight,
+                new boolean[6]
+        );
+
+        if (isItem) {
+            stack.translate(0.5F, 0.5F, 0.5F);
+            stack.mulPose(new Matrix4f().scale(1.01f));
+            stack.translate(-0.5F, -0.5F, -0.5F);
+        }
+
+        VertexConsumer mainOverlayVertexConsumer = mainBarrelOverlayMaterial.buffer(bufferSource, RenderType::entityTranslucent);
+
+        EntityRendererHelper.drawInsetCube(
+                mainOverlayVertexConsumer,
+                stack,
+                new Vector3f(0f),
+                new Vector3f(16f),
+                packedOverlay,
+                packedLight,
+                // Disable top and bottom for main texture
+                new boolean[]{
+                        false, false, true, true, false, false
+                }
+        );
+
+        VertexConsumer bottomOverlayVertexConsumer = bottomBarrelOverlayMaterial.buffer(bufferSource, RenderType::entityTranslucent);
+
+        EntityRendererHelper.drawNegYQuad(
+                bottomOverlayVertexConsumer,
+                stack,
+                new Vector3f(0f),
+                new Vector2f(16f),
+                new Vector2f(0f),
+                16f,
+                packedLight,
+                packedOverlay,
+                0xFFFFFFFF
+        );
+
+        VertexConsumer topOverlayVertexConsumer = blockEntity.getBlockState().getValue(DynamicBarrel.OPEN)
+                ? topOpenBarrelOverlayMaterial.buffer(bufferSource, RenderType::entityTranslucent)
+                : topBarrelOverlayMaterial.buffer(bufferSource, RenderType::entityTranslucent);
+
+
+        EntityRendererHelper.drawYQuad(
+                topOverlayVertexConsumer,
+                stack,
+                new Vector3f(0f, 16f, 0f),
+                new Vector2f(16f),
+                new Vector2f(0f),
+                16f,
+                packedLight,
+                packedOverlay,
+                0xFFFFFFFF
+        );
+
+        stack.popPose();
+    }
+
+    @Override
+    public void renderReinforcement(@NotNull DynamicBarrelBlockEntity blockEntity, float partialTick, @NotNull PoseStack stack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean isItem) {
+        stack.pushPose();
+
+        if (isItem) {
+            stack.translate(0.5F, 0.5F, 0.5F);
+            stack.mulPose(new Matrix4f().scale(1.02f));
+            stack.translate(-0.5F, -0.5F, -0.5F);
+        } else {
+            stack.translate(0.5F, 0.5F, 0.5F);
+            stack.mulPose(new Matrix4f().scale(1.02f));
+            stack.translate(-0.5F, -0.5F, -0.5F);
+        }
+
+        VertexConsumer mainVertexConsumer = reinforcementMaterial.buffer(bufferSource, RenderType::entityCutout);
+
+        EntityRendererHelper.drawInsetCube(
+                mainVertexConsumer,
+                stack,
+                new Vector3f(0f),
+                new Vector3f(16f),
+                packedOverlay,
+                packedLight,
+                // Reinforcement not drawn on top or bottom
+                new boolean[] {
+                        false, false, true, true, false, false
+                },
+                color
+        );
+
+        stack.popPose();
     }
 
     @Override
@@ -76,7 +212,7 @@ public class BlockOverlay implements IChestMaterial {
         Material material = getMaterial(chestType);
         VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
 
-        VertexConsumer blockVertexConsumer = blockMaterial.buffer(bufferSource, RenderType::entityCutout);
+        VertexConsumer blockVertexConsumer = blockMaterial.buffer(bufferSource, RenderType::entitySolid);
 
         boolean isDouble = chestType != ChestType.SINGLE;
         boolean isOffset = chestType != ChestType.LEFT;
@@ -145,7 +281,7 @@ public class BlockOverlay implements IChestMaterial {
         Material material = getMaterial(chestType);
         VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
 
-        VertexConsumer blockVertexConsumer = blockMaterial.buffer(bufferSource, RenderType::entityCutout);
+        VertexConsumer blockVertexConsumer = blockMaterial.buffer(bufferSource, RenderType::entitySolid);
 
         boolean isDouble = chestType != ChestType.SINGLE;
         boolean isOffset = chestType != ChestType.LEFT;
@@ -213,7 +349,7 @@ public class BlockOverlay implements IChestMaterial {
         ChestType chestType = blockstate.hasProperty(ChestBlock.TYPE) ? blockstate.getValue(ChestBlock.TYPE) : ChestType.SINGLE;
 
         Material material = getMaterial(chestType);
-        VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
+        VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entitySolid);
 
         float lockWidth = chestType == ChestType.SINGLE ? 2f: 1f;
         float lockPos = switch (chestType) {
@@ -240,9 +376,9 @@ public class BlockOverlay implements IChestMaterial {
 
     protected Material getMaterial(ChestType chestType) {
         return switch (chestType) {
-            case SINGLE -> mainOverlayMaterial;
-            case LEFT -> leftOverlayMaterial;
-            case RIGHT -> rightOverlayMaterial;
+            case SINGLE -> mainChestOverlayMaterial;
+            case LEFT -> leftChestOverlayMaterial;
+            case RIGHT -> rightChestOverlayMaterial;
         };
     }
 }

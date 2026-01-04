@@ -66,7 +66,7 @@ public class VanillaChest implements IChestMaterial {
         ChestType chestType = blockstate.hasProperty(ChestBlock.TYPE) ? blockstate.getValue(ChestBlock.TYPE) : ChestType.SINGLE;
 
         Material material = getMaterial(chestType);
-        VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
+        VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entitySolid);
 
         boolean isDouble = chestType != ChestType.SINGLE;
         boolean isOffset = chestType != ChestType.LEFT;
@@ -113,7 +113,7 @@ public class VanillaChest implements IChestMaterial {
         ChestType chestType = blockstate.hasProperty(ChestBlock.TYPE) ? blockstate.getValue(ChestBlock.TYPE) : ChestType.SINGLE;
 
         Material material = getMaterial(chestType);
-        VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
+        VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entitySolid);
 
         boolean isDouble = chestType != ChestType.SINGLE;
         boolean isOffset = chestType != ChestType.LEFT;
@@ -160,7 +160,7 @@ public class VanillaChest implements IChestMaterial {
         ChestType chestType = blockstate.hasProperty(ChestBlock.TYPE) ? blockstate.getValue(ChestBlock.TYPE) : ChestType.SINGLE;
 
         Material material = getMaterial(chestType);
-        VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
+        VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entitySolid);
 
         float lockWidth = chestType == ChestType.SINGLE ? 2f: 1f;
         float lockPos = switch (chestType) {

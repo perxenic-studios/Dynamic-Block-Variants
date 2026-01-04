@@ -146,6 +146,6 @@ public class MaterialStore implements ResourceManagerReloadListener {
             DBVariants.LOGGER.warn("Block {} appears to have no textures!", wantedMaterial);
             return DBVMaterialProvider.DEFAULT_CHEST;
         }
-        return new BlockOverlay(texture);
+        return new BlockOverlay(texture, BuiltInRegistries.BLOCK.get(wantedMaterial).defaultMapColor().col);
     }
 }
