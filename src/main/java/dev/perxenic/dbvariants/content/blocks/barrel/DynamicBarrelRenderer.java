@@ -18,8 +18,6 @@ public class DynamicBarrelRenderer implements BlockEntityRenderer<DynamicBarrelB
                        @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         IBarrelMaterial dynamicMaterial = blockEntity.barrelMaterial == null ? DBVMaterialProvider.DEFAULT_BARREL : blockEntity.barrelMaterial;
 
-        DBVariants.LOGGER.info("Packed light: {}", packedLight);
-
         dynamicMaterial.renderBarrel(
                 blockEntity,
                 partialTick,
