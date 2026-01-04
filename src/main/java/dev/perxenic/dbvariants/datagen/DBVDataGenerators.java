@@ -24,7 +24,7 @@ public class DBVDataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeClient(), new DBVChestMaterialProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeClient(), new DBVMaterialProvider(packOutput, lookupProvider, existingFileHelper));
 
         generator.addProvider(event.includeServer(), new LootTableProvider(
                 packOutput,

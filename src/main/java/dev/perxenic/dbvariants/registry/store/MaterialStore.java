@@ -5,9 +5,10 @@ import com.google.gson.JsonParser;
 import com.mojang.serialization.JsonOps;
 import dev.perxenic.dbvariants.Config;
 import dev.perxenic.dbvariants.DBVariants;
-import dev.perxenic.dbvariants.content.chestMaterialTypes.BlockOverlayChest;
-import dev.perxenic.dbvariants.content.chestMaterialTypes.interfaces.IChestMaterial;
-import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
+import dev.perxenic.dbvariants.content.materialTypes.BlockOverlay;
+import dev.perxenic.dbvariants.content.materialTypes.interfaces.IChestMaterial;
+import dev.perxenic.dbvariants.content.materialTypes.interfaces.IMaterial;
+import dev.perxenic.dbvariants.datagen.DBVMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVRegistries;
 import dev.perxenic.dbvariants.util.LocationHelper;
 import net.minecraft.client.Minecraft;
@@ -31,14 +32,14 @@ import java.util.*;
 import java.util.function.Predicate;
 
 /**
- * A clientside cache for ChestMaterials to be rendered by the Dynamic Chest
- * @see ChestMaterialStore#getChestMaterialSafe(ResourceLocation)
+ * A clientside cache for IMaterials to be rendered by dynamic blocks
+ * @see MaterialStore#getMaterialSafe(ResourceLocation)
  */
-public class ChestMaterialStore implements ResourceManagerReloadListener {
+public class MaterialStore implements ResourceManagerReloadListener {
     /**
      * A Hashmap to cache all chest materials loaded from resources or generated from the default
      */
-    private static final HashMap<ResourceLocation, IChestMaterial> CHEST_MATERIALS = new HashMap<>();
+    private static final HashMap<ResourceLocation, IMaterial> MATERIALS = new HashMap<>();
 
     /**
      * Ran on client resources reload, clears chest material cache and loads chest materials from resources
@@ -46,24 +47,24 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
      */
     @Override
     public void onResourceManagerReload(@NotNull ResourceManager resourceManager) {
-        CHEST_MATERIALS.clear();
-        for (Map.Entry<ResourceLocation, Resource> entry : resourceManager.listResources(DBVChestMaterialProvider.DIRECTORY,
+        MATERIALS.clear();
+        for (Map.Entry<ResourceLocation, Resource> entry : resourceManager.listResources(DBVMaterialProvider.DIRECTORY,
                 location -> location.getPath().endsWith(".json")).entrySet()) {
-            IChestMaterial material = parseChestMaterial(entry);
-            if (material != null) CHEST_MATERIALS.put(LocationHelper.getFileID(entry.getKey()), material);
+            IMaterial material = parseMaterial(entry);
+            if (material != null) MATERIALS.put(LocationHelper.getFileID(entry.getKey()), material);
         }
     }
 
     /**
      * Parses chest material from resources map
      * @param entry A map entry returned by {@link ResourceManager#listResources(String, Predicate)}
-     * @return The {@link IChestMaterial} instance decoded from JSON
-     * @see ChestMaterialStore#getChestMaterialSafe(ResourceLocation)
+     * @return The {@link IMaterial} instance decoded from JSON
+     * @see MaterialStore#getMaterialSafe(ResourceLocation)
      */
-    private static @Nullable IChestMaterial parseChestMaterial(Map.Entry<ResourceLocation, Resource> entry) {
+    private static @Nullable IMaterial parseMaterial(Map.Entry<ResourceLocation, Resource> entry) {
         try (BufferedReader reader = entry.getValue().openAsReader()) {
             JsonElement jsonElement = JsonParser.parseReader(reader);
-            return DBVRegistries.CHEST_MATERIAL_CODEC.parse(JsonOps.INSTANCE, jsonElement).getOrThrow();
+            return DBVRegistries.MATERIAL_CODEC.parse(JsonOps.INSTANCE, jsonElement).getOrThrow();
         } catch (IOException | IllegalStateException e) {
             DBVariants.LOGGER.error("Failed to parse chest material {} with exception {}", entry.getKey(), e);
         }
@@ -95,29 +96,45 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
     }
 
     /**
-     * Looks up a {@link IChestMaterial} in the cache and creates one from the default if it is not present
-     * @param chestMaterialLoc The {@link ResourceLocation} of the chest material to lookup
-     * @return The cached {@link IChestMaterial}
+     * Looks up a {@link IMaterial} in the cache and creates one from the default if it is not present
+     * @param materialLoc The {@link ResourceLocation} of the material to lookup
+     * @return The cached {@link IMaterial}
      */
-    public static IChestMaterial getChestMaterialSafe(ResourceLocation chestMaterialLoc) {
-        if(chestMaterialLoc == null) return DBVChestMaterialProvider.DEFAULT;
+    //TODO: Look into specifying type of material needed
+    public static IMaterial getMaterialSafe(ResourceLocation materialLoc) {
+        if(materialLoc == null) return DBVMaterialProvider.DEFAULT_CHEST;
 
-        if (!CHEST_MATERIALS.containsKey(chestMaterialLoc)) {
+
+        if (!MATERIALS.containsKey(materialLoc)) {
             if (Config.vanillaDefaultChestTexture) {
-                // Cache chest material for quicker lookup next time
-                CHEST_MATERIALS.put(chestMaterialLoc, DBVChestMaterialProvider.DEFAULT);
+                // Cache material for quicker lookup next time
+                MATERIALS.put(materialLoc, DBVMaterialProvider.DEFAULT_CHEST);
             } else {
-                ResourceLocation texture = textureFromBlock(chestMaterialLoc);
+                ResourceLocation texture = textureFromBlock(materialLoc);
                 // Do not cache if texture is null, texture should be searched for again
                 if (texture == null) {
-                    DBVariants.LOGGER.warn("Block {} appears to have no textures!", chestMaterialLoc);
-                    return DBVChestMaterialProvider.DEFAULT;
+                    DBVariants.LOGGER.warn("Block {} appears to have no textures!", materialLoc);
+                    return DBVMaterialProvider.DEFAULT_CHEST;
                 }
-                // Cache chest material for quicker lookup next time
-                CHEST_MATERIALS.put(chestMaterialLoc, new BlockOverlayChest(texture));
+                // Cache material for quicker lookup next time
+                MATERIALS.put(materialLoc, new BlockOverlay(texture));
             }
         }
 
-        return CHEST_MATERIALS.get(chestMaterialLoc);
+        return MATERIALS.get(materialLoc);
+    }
+
+    //TODO: Document
+    public static IChestMaterial getDefaultChestMaterial(ResourceLocation wantedMaterial) {
+        if (Config.vanillaDefaultChestTexture) {
+            return DBVMaterialProvider.DEFAULT_CHEST;
+        } else {
+            ResourceLocation texture = textureFromBlock(wantedMaterial);
+            if (texture == null) {
+                DBVariants.LOGGER.warn("Block {} appears to have no textures!", wantedMaterial);
+                return DBVMaterialProvider.DEFAULT_CHEST;
+            }
+            return new BlockOverlay(texture);
+        }
     }
 }

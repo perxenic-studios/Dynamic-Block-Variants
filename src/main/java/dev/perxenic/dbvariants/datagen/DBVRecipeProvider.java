@@ -37,7 +37,7 @@ public class DBVRecipeProvider extends RecipeProvider implements IConditionBuild
 
         new CustomDynamicChestRecipeBuilder(
                 RecipeCategory.BUILDING_BLOCKS,
-                DBVChestMaterialProvider.XMAS_KEY
+                DBVMaterialProvider.XMAS_CHEST_KEY
         )
                 .pattern("XXX")
                 .pattern("X#X")

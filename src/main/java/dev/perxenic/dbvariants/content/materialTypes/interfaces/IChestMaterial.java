@@ -1,4 +1,4 @@
-package dev.perxenic.dbvariants.content.chestMaterialTypes.interfaces;
+package dev.perxenic.dbvariants.content.materialTypes.interfaces;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -29,18 +29,18 @@ public interface IChestMaterial extends IMaterial {
             int packedOverlay,
             boolean isItem
     ) {
-        stack.pushPose();
-
         Level level = blockEntity.getLevel();
         boolean levelPresent = level != null;
         BlockState blockstate = levelPresent ? blockEntity.getBlockState() : DBVBlocks.DYNAMIC_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH);
+
+        if (!(blockstate.getBlock() instanceof AbstractChestBlock<?> abstractchestblock)) return;
+
+        stack.pushPose();
 
         float yRot = blockstate.getValue(ChestBlock.FACING).toYRot();
         stack.translate(0.5F, 0.5F, 0.5F);
         stack.mulPose(Axis.YP.rotationDegrees(-yRot));
         stack.translate(-0.5F, -0.5F, -0.5F);
-
-        if (!(blockstate.getBlock() instanceof AbstractChestBlock<?> abstractchestblock)) return;
 
         DoubleBlockCombiner.NeighborCombineResult<? extends ChestBlockEntity> neighborcombineresult;
         if (levelPresent) {
@@ -88,6 +88,26 @@ public interface IChestMaterial extends IMaterial {
         );
 
         stack.popPose();
+    }
+
+    default void render(
+            @NotNull DynamicChestBlockEntity blockEntity,
+            float partialTick,
+            @NotNull PoseStack stack,
+            @NotNull MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay,
+            boolean isItem
+    ) {
+        renderChest(
+                blockEntity,
+                partialTick,
+                stack,
+                bufferSource,
+                packedLight,
+                packedOverlay,
+                isItem
+        );
     }
 
     void renderBody(

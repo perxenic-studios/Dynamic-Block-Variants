@@ -8,7 +8,7 @@
   "type": "dbvariants:custom_dynamic_chest",
   "category": "building",
   "group": "dynamic_blocks",
-  "material": "dbvariants:xmas",
+  "material": "dbvariants:xmas_chest",
   "pattern": {
     "key": {
       "#": {

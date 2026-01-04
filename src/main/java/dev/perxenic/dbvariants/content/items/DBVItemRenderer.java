@@ -3,8 +3,7 @@ package dev.perxenic.dbvariants.content.items;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.perxenic.dbvariants.content.blocks.chest.DynamicChest;
 import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestBlockEntity;
-import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestRenderer;
-import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
+import dev.perxenic.dbvariants.datagen.DBVMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -86,7 +85,7 @@ public class DBVItemRenderer extends BlockEntityWithoutLevelRenderer {
 
         CustomData blockEntityData = stack.getComponents().get(DataComponents.BLOCK_ENTITY_DATA);
         dynamicChest.chestMaterialLoc =  (blockEntityData == null || !blockEntityData.contains(DynamicChestBlockEntity.MATERIAL_TAG))
-                ? DBVChestMaterialProvider.DEFAULT_KEY
+                ? DBVMaterialProvider.DEFAULT_CHEST_KEY
                 : ResourceLocation.parse(blockEntityData.copyTag().getString(DynamicChestBlockEntity.MATERIAL_TAG));
         dynamicChest.updateChestMaterial();
         dynamicChest.chestMaterial.renderChest(

@@ -1,7 +1,7 @@
 package dev.perxenic.dbvariants;
 
 import dev.perxenic.dbvariants.content.items.DBVItemExtensions;
-import dev.perxenic.dbvariants.registry.store.ChestMaterialStore;
+import dev.perxenic.dbvariants.registry.store.MaterialStore;
 import dev.perxenic.dbvariants.registry.DBVItems;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -30,6 +30,6 @@ public class DBVariantsClient {
 
     @SubscribeEvent
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(new ChestMaterialStore());
+        event.registerReloadListener(new MaterialStore());
     }
 }
