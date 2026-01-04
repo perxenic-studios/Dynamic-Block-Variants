@@ -11,6 +11,10 @@ import java.util.HashMap;
 public class Config {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
+    public static final ModConfigSpec.BooleanValue VANILLA_DEFAULT_BARREL_TEXTURE = BUILDER
+            .comment("Whether unset materials should default to vanilla barrel texture (Requires client reload)")
+            .define("vanillaDefaultBarrelTexture", false);
+
     public static final ModConfigSpec.BooleanValue VANILLA_DEFAULT_CHEST_TEXTURE = BUILDER
             .comment("Whether unset materials should default to vanilla chest texture (Requires client reload)")
             .define("vanillaDefaultChestTexture", false);
@@ -21,6 +25,7 @@ public class Config {
 
     static final ModConfigSpec SPEC = BUILDER.build();
 
+    public static boolean vanillaDefaultBarrelTexture;
     public static boolean vanillaDefaultChestTexture;
     public static boolean xmasChestRecipe;
 
@@ -28,6 +33,9 @@ public class Config {
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
+        vanillaDefaultBarrelTexture = VANILLA_DEFAULT_BARREL_TEXTURE.get();
+        configDict.put("vanillaDefaultBarrelTexture", vanillaDefaultBarrelTexture);
+
         vanillaDefaultChestTexture = VANILLA_DEFAULT_CHEST_TEXTURE.get();
         configDict.put("vanillaDefaultChestTexture", vanillaDefaultChestTexture);
 

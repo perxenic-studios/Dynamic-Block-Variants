@@ -22,7 +22,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import static dev.perxenic.dbvariants.util.ChestMaterialHelper.*;
+import static dev.perxenic.dbvariants.util.material.ChestMaterialHelper.*;
 
 import static dev.perxenic.dbvariants.util.LocationHelper.dbvLoc;
 

@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import static dev.perxenic.dbvariants.util.ChestMaterialHelper.*;
+import static dev.perxenic.dbvariants.util.material.ChestMaterialHelper.*;
 
 public class VanillaChest implements IChestMaterial {
     public static final MapCodec<VanillaChest> CODEC = RecordCodecBuilder.mapCodec(inst ->

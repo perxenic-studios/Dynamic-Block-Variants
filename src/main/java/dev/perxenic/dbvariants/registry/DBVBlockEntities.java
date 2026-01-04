@@ -1,6 +1,8 @@
 package dev.perxenic.dbvariants.registry;
 
 import dev.perxenic.dbvariants.DBVariants;
+import dev.perxenic.dbvariants.content.blocks.barrel.DynamicBarrelBlockEntity;
+import dev.perxenic.dbvariants.content.blocks.barrel.DynamicBarrelRenderer;
 import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestRenderer;
 import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestBlockEntity;
 import net.minecraft.core.registries.Registries;
@@ -18,6 +20,13 @@ public class DBVBlockEntities {
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, DBVariants.MODID);
 
     @SuppressWarnings("DataFlowIssue") // NeoForge advises passing null to build
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DynamicBarrelBlockEntity>> DYNAMIC_BARREL =
+            BLOCK_ENTITY_TYPES.register("dynamic_barrel", () -> BlockEntityType.Builder.of(
+                    DynamicBarrelBlockEntity::new,
+                    DBVBlocks.DYNAMIC_BARREL.get()
+            ).build(null));
+
+    @SuppressWarnings("DataFlowIssue") // NeoForge advises passing null to build
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DynamicChestBlockEntity>> DYNAMIC_CHEST =
             BLOCK_ENTITY_TYPES.register("dynamic_chest", () -> BlockEntityType.Builder.of(
                     DynamicChestBlockEntity::new,
@@ -26,6 +35,10 @@ public class DBVBlockEntities {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(
+                DBVBlockEntities.DYNAMIC_BARREL.get(),
+                DynamicBarrelRenderer::new
+        );
         event.registerBlockEntityRenderer(
                 DBVBlockEntities.DYNAMIC_CHEST.get(),
                 DynamicChestRenderer::new

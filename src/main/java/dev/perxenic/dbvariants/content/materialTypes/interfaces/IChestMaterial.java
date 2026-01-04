@@ -7,7 +7,7 @@ import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestBlockEntity;
 import dev.perxenic.dbvariants.infra.MaterialSuffixDefinition;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
 import dev.perxenic.dbvariants.registry.store.MaterialStore;
-import dev.perxenic.dbvariants.util.ChestMaterialHelper;
+import dev.perxenic.dbvariants.util.material.ChestMaterialHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BrightnessCombiner;
 import net.minecraft.core.Direction;
@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -98,7 +99,7 @@ public interface IChestMaterial extends IMaterial {
     }
 
     default void render(
-            @NotNull DynamicChestBlockEntity blockEntity,
+            @NotNull BlockEntity blockEntity,
             float partialTick,
             @NotNull PoseStack stack,
             @NotNull MultiBufferSource bufferSource,
@@ -106,8 +107,10 @@ public interface IChestMaterial extends IMaterial {
             int packedOverlay,
             boolean isItem
     ) {
+        if (!(blockEntity instanceof DynamicChestBlockEntity chestBlockEntity)) return;
+
         renderChest(
-                blockEntity,
+                chestBlockEntity,
                 partialTick,
                 stack,
                 bufferSource,

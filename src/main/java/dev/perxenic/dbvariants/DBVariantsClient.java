@@ -24,7 +24,7 @@ public class DBVariantsClient {
     public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerItem(
                 new DBVItemExtensions(),
-                DBVItems.DYNAMIC_CHEST
+                DBVItems.DYNAMIC_CHEST, DBVItems.DYNAMIC_BARREL
         );
     }
 

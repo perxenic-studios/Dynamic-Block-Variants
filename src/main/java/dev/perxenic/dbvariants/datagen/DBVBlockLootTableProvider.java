@@ -11,6 +11,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -22,11 +23,21 @@ public class DBVBlockLootTableProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
+        addDynamicBlock(DBVBlocks.DYNAMIC_CHEST);
+        addDynamicBlock(DBVBlocks.DYNAMIC_BARREL);
+    }
+
+    @Override
+    protected @NotNull Iterable<Block> getKnownBlocks() {
+        return DBVBlocks.BLOCKS.getEntries().stream().map(Holder::value)::iterator;
+    }
+
+    protected void addDynamicBlock(DeferredBlock<? extends Block> deferredBlock) {
         add(
-                DBVBlocks.DYNAMIC_CHEST.get(),
+                deferredBlock.get(),
                 LootTable.lootTable().withPool(
                         LootPool.lootPool().add(
-                                LootItem.lootTableItem(DBVBlocks.DYNAMIC_CHEST)
+                                LootItem.lootTableItem(deferredBlock)
                                         .apply(CopyComponentsFunction
                                                 .copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
                                                 .include(DataComponents.BLOCK_ENTITY_DATA)
@@ -35,10 +46,5 @@ public class DBVBlockLootTableProvider extends BlockLootSubProvider {
                         )
                 )
         );
-    }
-
-    @Override
-    protected @NotNull Iterable<Block> getKnownBlocks() {
-        return DBVBlocks.BLOCKS.getEntries().stream().map(Holder::value)::iterator;
     }
 }

@@ -4,7 +4,7 @@ import dev.perxenic.dbvariants.content.materialTypes.interfaces.IChestMaterial;
 import dev.perxenic.dbvariants.content.materialTypes.interfaces.IMaterial;
 import dev.perxenic.dbvariants.registry.store.MaterialStore;
 import dev.perxenic.dbvariants.registry.DBVBlockEntities;
-import dev.perxenic.dbvariants.util.ChestMaterialHelper;
+import dev.perxenic.dbvariants.util.material.ChestMaterialHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
@@ -21,10 +21,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class DynamicChestBlockEntity extends ChestBlockEntity {
-
     public static final String MATERIAL_TAG = "dynamic_material";
     public ResourceLocation chestMaterialLoc;
 
+    // Should only be updated and checked by client
     public IChestMaterial chestMaterial;
 
     public DynamicChestBlockEntity(BlockPos pos, BlockState state) {

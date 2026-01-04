@@ -1,8 +1,6 @@
-package dev.perxenic.dbvariants.util;
+package dev.perxenic.dbvariants.util.material;
 
 import dev.perxenic.dbvariants.Config;
-import dev.perxenic.dbvariants.DBVariants;
-import dev.perxenic.dbvariants.content.materialTypes.BlockOverlay;
 import dev.perxenic.dbvariants.content.materialTypes.interfaces.IChestMaterial;
 import dev.perxenic.dbvariants.content.materialTypes.interfaces.IMaterial;
 import dev.perxenic.dbvariants.datagen.DBVMaterialProvider;
