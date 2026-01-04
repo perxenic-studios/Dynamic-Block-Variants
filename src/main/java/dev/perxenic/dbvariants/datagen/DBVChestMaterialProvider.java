@@ -1,7 +1,7 @@
 package dev.perxenic.dbvariants.datagen;
 
-import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.VanillaChest;
+import dev.perxenic.dbvariants.content.chestMaterialTypes.interfaces.IChestMaterial;
 import dev.perxenic.dbvariants.registry.DBVRegistries;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 import static dev.perxenic.dbvariants.DBVariants.MODID;
 import static dev.perxenic.dbvariants.util.LocationHelper.*;
 
-public class DBVChestMaterialProvider extends JsonCodecProvider<ChestMaterial> {
+public class DBVChestMaterialProvider extends JsonCodecProvider<IChestMaterial> {
     public static final String DIRECTORY = MODID + "/chest_material";
 
     public static final ResourceLocation DEFAULT_KEY = dbvLoc("default");

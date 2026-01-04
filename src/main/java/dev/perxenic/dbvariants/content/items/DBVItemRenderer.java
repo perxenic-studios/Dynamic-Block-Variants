@@ -89,7 +89,7 @@ public class DBVItemRenderer extends BlockEntityWithoutLevelRenderer {
                 ? DBVChestMaterialProvider.DEFAULT_KEY
                 : ResourceLocation.parse(blockEntityData.copyTag().getString(DynamicChestBlockEntity.MATERIAL_TAG));
         dynamicChest.updateChestMaterial();
-        dynamicChest.chestMaterial.render(
+        dynamicChest.chestMaterial.renderChest(
                 dynamicChest,
                 0,
                 poseStack,

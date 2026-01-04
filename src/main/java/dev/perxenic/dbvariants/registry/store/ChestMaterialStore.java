@@ -6,7 +6,7 @@ import com.mojang.serialization.JsonOps;
 import dev.perxenic.dbvariants.Config;
 import dev.perxenic.dbvariants.DBVariants;
 import dev.perxenic.dbvariants.content.chestMaterialTypes.BlockOverlayChest;
-import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
+import dev.perxenic.dbvariants.content.chestMaterialTypes.interfaces.IChestMaterial;
 import dev.perxenic.dbvariants.datagen.DBVChestMaterialProvider;
 import dev.perxenic.dbvariants.registry.DBVRegistries;
 import dev.perxenic.dbvariants.util.LocationHelper;
@@ -38,7 +38,7 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
     /**
      * A Hashmap to cache all chest materials loaded from resources or generated from the default
      */
-    private static final HashMap<ResourceLocation, ChestMaterial> CHEST_MATERIALS = new HashMap<>();
+    private static final HashMap<ResourceLocation, IChestMaterial> CHEST_MATERIALS = new HashMap<>();
 
     /**
      * Ran on client resources reload, clears chest material cache and loads chest materials from resources
@@ -49,7 +49,7 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
         CHEST_MATERIALS.clear();
         for (Map.Entry<ResourceLocation, Resource> entry : resourceManager.listResources(DBVChestMaterialProvider.DIRECTORY,
                 location -> location.getPath().endsWith(".json")).entrySet()) {
-            ChestMaterial material = parseChestMaterial(entry);
+            IChestMaterial material = parseChestMaterial(entry);
             if (material != null) CHEST_MATERIALS.put(LocationHelper.getFileID(entry.getKey()), material);
         }
     }
@@ -57,10 +57,10 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
     /**
      * Parses chest material from resources map
      * @param entry A map entry returned by {@link ResourceManager#listResources(String, Predicate)}
-     * @return The {@link ChestMaterial} instance decoded from JSON
+     * @return The {@link IChestMaterial} instance decoded from JSON
      * @see ChestMaterialStore#getChestMaterialSafe(ResourceLocation)
      */
-    private static @Nullable ChestMaterial parseChestMaterial(Map.Entry<ResourceLocation, Resource> entry) {
+    private static @Nullable IChestMaterial parseChestMaterial(Map.Entry<ResourceLocation, Resource> entry) {
         try (BufferedReader reader = entry.getValue().openAsReader()) {
             JsonElement jsonElement = JsonParser.parseReader(reader);
             return DBVRegistries.CHEST_MATERIAL_CODEC.parse(JsonOps.INSTANCE, jsonElement).getOrThrow();
@@ -95,11 +95,11 @@ public class ChestMaterialStore implements ResourceManagerReloadListener {
     }
 
     /**
-     * Looks up a {@link ChestMaterial} in the cache and creates one from the default if it is not present
+     * Looks up a {@link IChestMaterial} in the cache and creates one from the default if it is not present
      * @param chestMaterialLoc The {@link ResourceLocation} of the chest material to lookup
-     * @return The cached {@link ChestMaterial}
+     * @return The cached {@link IChestMaterial}
      */
-    public static ChestMaterial getChestMaterialSafe(ResourceLocation chestMaterialLoc) {
+    public static IChestMaterial getChestMaterialSafe(ResourceLocation chestMaterialLoc) {
         if(chestMaterialLoc == null) return DBVChestMaterialProvider.DEFAULT;
 
         if (!CHEST_MATERIALS.containsKey(chestMaterialLoc)) {

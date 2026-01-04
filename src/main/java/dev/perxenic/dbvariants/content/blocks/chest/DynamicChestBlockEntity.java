@@ -1,6 +1,6 @@
 package dev.perxenic.dbvariants.content.blocks.chest;
 
-import dev.perxenic.dbvariants.content.chestMaterialTypes.ChestMaterial;
+import dev.perxenic.dbvariants.content.chestMaterialTypes.interfaces.IChestMaterial;
 import dev.perxenic.dbvariants.registry.store.ChestMaterialStore;
 import dev.perxenic.dbvariants.registry.DBVBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -23,7 +23,7 @@ public class DynamicChestBlockEntity extends ChestBlockEntity {
     public static final String MATERIAL_TAG = "dynamic_material";
     public ResourceLocation chestMaterialLoc;
 
-    public ChestMaterial chestMaterial;
+    public IChestMaterial chestMaterial;
 
     public DynamicChestBlockEntity(BlockPos pos, BlockState state) {
         super(DBVBlockEntities.DYNAMIC_CHEST.get(), pos, state);

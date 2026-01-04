@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestBlockEntity;
+import dev.perxenic.dbvariants.content.chestMaterialTypes.interfaces.IChestMaterial;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
 import dev.perxenic.dbvariants.util.EntityRendererHelper;
 import net.minecraft.client.model.geom.ModelPart;
@@ -27,7 +28,9 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-public class VanillaChest extends ChestMaterial{
+import static dev.perxenic.dbvariants.util.ChestMaterialHelper.*;
+
+public class VanillaChest implements IChestMaterial {
     public static final MapCodec<VanillaChest> CODEC = RecordCodecBuilder.mapCodec(inst ->
             inst.group(
                 ResourceLocation.CODEC.fieldOf("chest_name").forGetter(s -> s.chestName)
@@ -47,45 +50,28 @@ public class VanillaChest extends ChestMaterial{
     }
 
     @Override
-    public MapCodec<? extends ChestMaterial> codec() {
+    public MapCodec<? extends IChestMaterial> codec() {
         return CODEC;
     }
 
     @Override
-    public void render(
+    public void renderBody(
             @NotNull DynamicChestBlockEntity blockEntity,
             float partialTick,
             @NotNull PoseStack stack,
             @NotNull MultiBufferSource bufferSource,
-            int packedLight,
+            int brightness,
             int packedOverlay,
             boolean isItem
     ) {
+        stack.pushPose();
+
         Level level = blockEntity.getLevel();
         boolean levelPresent = level != null;
 
         BlockState blockstate = levelPresent ? blockEntity.getBlockState() : DBVBlocks.DYNAMIC_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH);
         ChestType chestType = blockstate.hasProperty(ChestBlock.TYPE) ? blockstate.getValue(ChestBlock.TYPE) : ChestType.SINGLE;
 
-        if (!(blockstate.getBlock() instanceof AbstractChestBlock<?> abstractchestblock)) return;
-
-        stack.pushPose();
-
-        float yRot = blockstate.getValue(ChestBlock.FACING).toYRot();
-        stack.translate(0.5F, 0.5F, 0.5F);
-        stack.mulPose(Axis.YP.rotationDegrees(-yRot));
-        stack.translate(-0.5F, -0.5F, -0.5F);
-
-        DoubleBlockCombiner.NeighborCombineResult<? extends ChestBlockEntity> neighborcombineresult;
-        if (levelPresent) {
-            neighborcombineresult = abstractchestblock.combine(blockstate, level, blockEntity.getBlockPos(), true);
-        } else {
-            neighborcombineresult = DoubleBlockCombiner.Combiner::acceptNone;
-        }
-
-        float lidAngle = 1.0F - neighborcombineresult.apply(ChestBlock.opennessCombiner(blockEntity)).get(partialTick);
-        lidAngle = 1.0F - lidAngle * lidAngle * lidAngle;
-        int brightness = neighborcombineresult.apply(new BrightnessCombiner<>()).applyAsInt(packedLight);
         Material material = getMaterial(chestType);
         VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
 
@@ -95,7 +81,7 @@ public class VanillaChest extends ChestMaterial{
         float width = isDouble ? 15f : 14f;
         float startX = isOffset ? 1f : 0f;
 
-        // Chest Body
+        // Chest Body Overlay
         EntityRendererHelper.drawFlippedCube(
                 vertexConsumer,
                 stack,
@@ -105,18 +91,44 @@ public class VanillaChest extends ChestMaterial{
                 64f,
                 packedOverlay,
                 brightness,
-                new boolean[] {
+                new boolean[]{
                         chestType == ChestType.LEFT,
                         chestType == ChestType.RIGHT,
-                        false, false, false , false
+                        false, false, false, false
                 }
         );
 
-        stack.translate(0f, 9/16f, 1/16f);
-        stack.mulPose(Axis.XP.rotationDegrees(-lidAngle * 90f));
-        stack.translate(0f, -9/16f, -1/16f);
+        stack.popPose();
+    }
 
-        // Chest Lid
+    @Override
+    public void renderLid(
+            @NotNull DynamicChestBlockEntity blockEntity,
+            float partialTick,
+            @NotNull PoseStack stack,
+            @NotNull MultiBufferSource bufferSource,
+            int brightness,
+            int packedOverlay,
+            boolean isItem
+    ) {
+        stack.pushPose();
+
+        Level level = blockEntity.getLevel();
+        boolean levelPresent = level != null;
+
+        BlockState blockstate = levelPresent ? blockEntity.getBlockState() : DBVBlocks.DYNAMIC_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH);
+        ChestType chestType = blockstate.hasProperty(ChestBlock.TYPE) ? blockstate.getValue(ChestBlock.TYPE) : ChestType.SINGLE;
+
+        Material material = getMaterial(chestType);
+        VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
+
+        boolean isDouble = chestType != ChestType.SINGLE;
+        boolean isOffset = chestType != ChestType.LEFT;
+
+        float width = isDouble ? 15f : 14f;
+        float startX = isOffset ? 1f : 0f;
+
+        // Chest Lid Overlay
         EntityRendererHelper.drawFlippedCube(
                 vertexConsumer,
                 stack,
@@ -126,12 +138,36 @@ public class VanillaChest extends ChestMaterial{
                 64f,
                 packedOverlay,
                 brightness,
-                new boolean[] {
+                new boolean[]{
                         chestType == ChestType.LEFT,
                         chestType == ChestType.RIGHT,
-                        false, false, false , false
+                        false, false, false, false
                 }
         );
+
+        stack.popPose();
+    }
+
+    @Override
+    public void renderLock(
+            @NotNull DynamicChestBlockEntity blockEntity,
+            float partialTick,
+            @NotNull PoseStack stack,
+            @NotNull MultiBufferSource bufferSource,
+            int brightness,
+            int packedOverlay,
+            boolean isItem
+    ) {
+        stack.pushPose();
+
+        Level level = blockEntity.getLevel();
+        boolean levelPresent = level != null;
+
+        BlockState blockstate = levelPresent ? blockEntity.getBlockState() : DBVBlocks.DYNAMIC_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH);
+        ChestType chestType = blockstate.hasProperty(ChestBlock.TYPE) ? blockstate.getValue(ChestBlock.TYPE) : ChestType.SINGLE;
+
+        Material material = getMaterial(chestType);
+        VertexConsumer vertexConsumer = material.buffer(bufferSource, RenderType::entityTranslucent);
 
         float lockWidth = chestType == ChestType.SINGLE ? 2f: 1f;
         float lockPos = switch (chestType) {
