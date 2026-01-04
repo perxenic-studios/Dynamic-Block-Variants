@@ -21,15 +21,6 @@ public abstract class ChestMaterial {
             @NotNull MultiBufferSource bufferSource,
             int packedLight,
             int packedOverlay,
-            ModelPart bottom,
-            ModelPart lid,
-            ModelPart lock,
-            ModelPart doubleLeftBottom,
-            ModelPart doubleLeftLid,
-            ModelPart doubleLeftLock,
-            ModelPart doubleRightBottom,
-            ModelPart doubleRightLid,
-            ModelPart doubleRightLock,
             boolean isItem
     );
 

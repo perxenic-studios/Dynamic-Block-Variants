@@ -66,15 +66,6 @@ public class BlockOverlayChest extends ChestMaterial{
             @NotNull MultiBufferSource bufferSource,
             int packedLight,
             int packedOverlay,
-            ModelPart bottom,
-            ModelPart lid,
-            ModelPart lock,
-            ModelPart doubleLeftBottom,
-            ModelPart doubleLeftLid,
-            ModelPart doubleLeftLock,
-            ModelPart doubleRightBottom,
-            ModelPart doubleRightLid,
-            ModelPart doubleRightLock,
             boolean isItem
     ) {
         Level level = blockEntity.getLevel();

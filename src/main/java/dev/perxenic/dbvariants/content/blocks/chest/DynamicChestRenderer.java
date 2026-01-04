@@ -11,29 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import org.jetbrains.annotations.NotNull;
 
 public class DynamicChestRenderer implements BlockEntityRenderer<DynamicChestBlockEntity> {
-    public final ModelPart bottom;
-    public final ModelPart lid;
-    public final ModelPart lock;
-    public final ModelPart doubleLeftBottom;
-    public final ModelPart doubleLeftLid;
-    public final ModelPart doubleLeftLock;
-    public final ModelPart doubleRightBottom;
-    public final ModelPart doubleRightLid;
-    public final ModelPart doubleRightLock;
-
     public DynamicChestRenderer(BlockEntityRendererProvider.Context context) {
-        ModelPart chestModelPart = context.bakeLayer(ModelLayers.CHEST);
-        this.bottom = chestModelPart.getChild("bottom");
-        this.lid = chestModelPart.getChild("lid");
-        this.lock = chestModelPart.getChild("lock");
-        ModelPart doubleLeftModelPart = context.bakeLayer(ModelLayers.DOUBLE_CHEST_LEFT);
-        this.doubleLeftBottom = doubleLeftModelPart.getChild("bottom");
-        this.doubleLeftLid = doubleLeftModelPart.getChild("lid");
-        this.doubleLeftLock = doubleLeftModelPart.getChild("lock");
-        ModelPart doubleRightModelPart = context.bakeLayer(ModelLayers.DOUBLE_CHEST_RIGHT);
-        this.doubleRightBottom = doubleRightModelPart.getChild("bottom");
-        this.doubleRightLid = doubleRightModelPart.getChild("lid");
-        this.doubleRightLock = doubleRightModelPart.getChild("lock");
     }
 
     @Override
@@ -48,15 +26,6 @@ public class DynamicChestRenderer implements BlockEntityRenderer<DynamicChestBlo
                 bufferSource,
                 packedLight,
                 packedOverlay,
-                bottom,
-                lid,
-                lock,
-                doubleLeftBottom,
-                doubleLeftLid,
-                doubleLeftLock,
-                doubleRightBottom,
-                doubleRightLid,
-                doubleRightLock,
                 false
         );
     }

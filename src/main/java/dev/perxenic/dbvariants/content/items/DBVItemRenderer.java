@@ -89,8 +89,6 @@ public class DBVItemRenderer extends BlockEntityWithoutLevelRenderer {
                 ? DBVChestMaterialProvider.DEFAULT_KEY
                 : ResourceLocation.parse(blockEntityData.copyTag().getString(DynamicChestBlockEntity.MATERIAL_TAG));
         dynamicChest.updateChestMaterial();
-        DynamicChestRenderer renderer = (DynamicChestRenderer) blockEntityRenderDispatcher.getRenderer(dynamicChest);
-        if (renderer == null) return;
         dynamicChest.chestMaterial.render(
                 dynamicChest,
                 0,
@@ -98,15 +96,6 @@ public class DBVItemRenderer extends BlockEntityWithoutLevelRenderer {
                 bufferSource,
                 packedLight,
                 packedOverlay,
-                renderer.bottom,
-                renderer.lid,
-                renderer.lock,
-                renderer.doubleLeftBottom,
-                renderer.doubleLeftLid,
-                renderer.doubleLeftLock,
-                renderer.doubleRightBottom,
-                renderer.doubleRightLid,
-                renderer.doubleRightLock,
                 true
         );
     }
