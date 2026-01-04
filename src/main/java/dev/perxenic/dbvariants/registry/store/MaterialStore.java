@@ -96,6 +96,7 @@ public class MaterialStore implements ResourceManagerReloadListener {
      */
     @SuppressWarnings("deprecation") // Can be safely ignored due to being in minecraft core rendering
     public static @Nullable ResourceLocation textureFromBlock(ResourceLocation location) {
+        if (location == null) return null;
         BlockState blockState = BuiltInRegistries.BLOCK.get(location).defaultBlockState();
         BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(blockState);
         // Create random with seed of 42 like vanilla renderer
@@ -134,9 +135,13 @@ public class MaterialStore implements ResourceManagerReloadListener {
         return MATERIALS.get(materialLoc);
     }
 
-    //TODO: Document
+    /**
+     * Returns the default {@link IMaterial} for a generic dynamic block, prefer to use {@link MaterialStore#chooseDefaultMaterial(ResourceLocation)}
+     * @param wantedMaterial The {@link ResourceLocation} of the material that was wanted but not found in cache
+     * @return The default {@link IMaterial}
+     */
     public static IMaterial getDefaultMaterial(ResourceLocation wantedMaterial) {
-        ResourceLocation texture = MaterialStore.textureFromBlock(wantedMaterial);
+        ResourceLocation texture = textureFromBlock(wantedMaterial);
         if (texture == null) {
             DBVariants.LOGGER.warn("Block {} appears to have no textures!", wantedMaterial);
             return DBVMaterialProvider.DEFAULT_CHEST;
