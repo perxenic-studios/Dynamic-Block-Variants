@@ -3,13 +3,13 @@ package dev.perxenic.dbvariants.registry.store;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.JsonOps;
-import dev.perxenic.dbvariants.Config;
 import dev.perxenic.dbvariants.DBVariants;
 import dev.perxenic.dbvariants.content.materialTypes.BlockOverlay;
-import dev.perxenic.dbvariants.content.materialTypes.interfaces.IChestMaterial;
 import dev.perxenic.dbvariants.content.materialTypes.interfaces.IMaterial;
 import dev.perxenic.dbvariants.datagen.DBVMaterialProvider;
+import dev.perxenic.dbvariants.infra.MaterialSuffixDefinition;
 import dev.perxenic.dbvariants.registry.DBVRegistries;
+import dev.perxenic.dbvariants.util.CollectionHelper;
 import dev.perxenic.dbvariants.util.LocationHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -33,13 +33,30 @@ import java.util.function.Predicate;
 
 /**
  * A clientside cache for IMaterials to be rendered by dynamic blocks
- * @see MaterialStore#getMaterialSafe(ResourceLocation)
+ * @see MaterialStore#chooseDefaultMaterial(ResourceLocation)
  */
 public class MaterialStore implements ResourceManagerReloadListener {
     /**
      * A Hashmap to cache all chest materials loaded from resources or generated from the default
      */
     private static final HashMap<ResourceLocation, IMaterial> MATERIALS = new HashMap<>();
+
+    //TODO: Document
+    private static final HashMap<String, MaterialSuffixDefinition<? extends IMaterial>> MATERIAL_SUFFIXES = new HashMap<>();
+
+    public static String registerSuffix(String suffix, MaterialSuffixDefinition<? extends IMaterial> suffixClass) {
+        // Do not allow suffixes with underscores to prevent them from incorrectly being parsed from string
+        if (suffix.contains("_")) {
+            DBVariants.LOGGER.error("Suffix {} contains an underscore", suffix);
+            return null;
+        }
+        if (MATERIAL_SUFFIXES.containsKey(suffix)) {
+            DBVariants.LOGGER.error("Suffix {} has already been registered!", suffix);
+            return null;
+        }
+        MATERIAL_SUFFIXES.put(suffix, suffixClass);
+        return suffix;
+    }
 
     /**
      * Ran on client resources reload, clears chest material cache and loads chest materials from resources
@@ -59,7 +76,7 @@ public class MaterialStore implements ResourceManagerReloadListener {
      * Parses chest material from resources map
      * @param entry A map entry returned by {@link ResourceManager#listResources(String, Predicate)}
      * @return The {@link IMaterial} instance decoded from JSON
-     * @see MaterialStore#getMaterialSafe(ResourceLocation)
+     * @see MaterialStore#chooseDefaultMaterial(ResourceLocation)
      */
     private static @Nullable IMaterial parseMaterial(Map.Entry<ResourceLocation, Resource> entry) {
         try (BufferedReader reader = entry.getValue().openAsReader()) {
@@ -96,45 +113,34 @@ public class MaterialStore implements ResourceManagerReloadListener {
     }
 
     /**
-     * Looks up a {@link IMaterial} in the cache and creates one from the default if it is not present
+     * Looks up a {@link IMaterial} in the cache and creates one from the default, looking at suffix to determine type
      * @param materialLoc The {@link ResourceLocation} of the material to lookup
      * @return The cached {@link IMaterial}
      */
-    //TODO: Look into specifying type of material needed
-    public static IMaterial getMaterialSafe(ResourceLocation materialLoc) {
-        if(materialLoc == null) return DBVMaterialProvider.DEFAULT_CHEST;
+    public static @Nullable IMaterial chooseDefaultMaterial(ResourceLocation materialLoc) {
+        if(materialLoc == null) return null;
 
+        if (MATERIALS.containsKey(materialLoc)) return MATERIALS.get(materialLoc);
 
-        if (!MATERIALS.containsKey(materialLoc)) {
-            if (Config.vanillaDefaultChestTexture) {
-                // Cache material for quicker lookup next time
-                MATERIALS.put(materialLoc, DBVMaterialProvider.DEFAULT_CHEST);
-            } else {
-                ResourceLocation texture = textureFromBlock(materialLoc);
-                // Do not cache if texture is null, texture should be searched for again
-                if (texture == null) {
-                    DBVariants.LOGGER.warn("Block {} appears to have no textures!", materialLoc);
-                    return DBVMaterialProvider.DEFAULT_CHEST;
-                }
-                // Cache material for quicker lookup next time
-                MATERIALS.put(materialLoc, new BlockOverlay(texture));
-            }
+        // Get default material for suffix
+        String suffix = CollectionHelper.getLastArray(materialLoc.getPath().split("_"));
+        if (MATERIAL_SUFFIXES.containsKey(suffix)) {
+            MATERIALS.put(materialLoc, MATERIAL_SUFFIXES.get(suffix).defaultMaterialGetter.apply(materialLoc));
+            return MATERIALS.get(materialLoc);
         }
 
+        // Suffix not found, assuming no suffix
+        MATERIALS.put(materialLoc, getDefaultMaterial(materialLoc));
         return MATERIALS.get(materialLoc);
     }
 
     //TODO: Document
-    public static IChestMaterial getDefaultChestMaterial(ResourceLocation wantedMaterial) {
-        if (Config.vanillaDefaultChestTexture) {
+    public static IMaterial getDefaultMaterial(ResourceLocation wantedMaterial) {
+        ResourceLocation texture = MaterialStore.textureFromBlock(wantedMaterial);
+        if (texture == null) {
+            DBVariants.LOGGER.warn("Block {} appears to have no textures!", wantedMaterial);
             return DBVMaterialProvider.DEFAULT_CHEST;
-        } else {
-            ResourceLocation texture = textureFromBlock(wantedMaterial);
-            if (texture == null) {
-                DBVariants.LOGGER.warn("Block {} appears to have no textures!", wantedMaterial);
-                return DBVMaterialProvider.DEFAULT_CHEST;
-            }
-            return new BlockOverlay(texture);
         }
+        return new BlockOverlay(texture);
     }
 }

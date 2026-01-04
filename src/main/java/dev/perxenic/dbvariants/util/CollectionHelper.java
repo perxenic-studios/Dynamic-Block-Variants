@@ -7,4 +7,9 @@ public class CollectionHelper {
         if (array.length < 1) return null;
         return array[0];
     }
+
+    public static <T> @Nullable T getLastArray(T[] array) {
+        if (array.length < 1) return null;
+        return array[array.length - 1];
+    }
 }

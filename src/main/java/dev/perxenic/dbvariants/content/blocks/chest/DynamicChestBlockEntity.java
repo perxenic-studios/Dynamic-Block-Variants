@@ -4,6 +4,7 @@ import dev.perxenic.dbvariants.content.materialTypes.interfaces.IChestMaterial;
 import dev.perxenic.dbvariants.content.materialTypes.interfaces.IMaterial;
 import dev.perxenic.dbvariants.registry.store.MaterialStore;
 import dev.perxenic.dbvariants.registry.DBVBlockEntities;
+import dev.perxenic.dbvariants.util.ChestMaterialHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
@@ -31,9 +32,9 @@ public class DynamicChestBlockEntity extends ChestBlockEntity {
     }
 
     public void updateChestMaterial() {
-        IMaterial material = MaterialStore.getMaterialSafe(chestMaterialLoc);
+        IMaterial material = MaterialStore.chooseDefaultMaterial(chestMaterialLoc);
         if (material instanceof IChestMaterial chestMaterial) this.chestMaterial = chestMaterial;
-        else this.chestMaterial = MaterialStore.getDefaultChestMaterial(chestMaterialLoc);
+        else this.chestMaterial = ChestMaterialHelper.getDefaultMaterial(chestMaterialLoc);
     }
 
     @Override

@@ -4,7 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
 import dev.perxenic.dbvariants.content.blocks.chest.DynamicChestBlockEntity;
+import dev.perxenic.dbvariants.infra.MaterialSuffixDefinition;
 import dev.perxenic.dbvariants.registry.DBVBlocks;
+import dev.perxenic.dbvariants.registry.store.MaterialStore;
+import dev.perxenic.dbvariants.util.ChestMaterialHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BrightnessCombiner;
 import net.minecraft.core.Direction;
@@ -17,6 +20,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public interface IChestMaterial extends IMaterial {
+    String SUFFIX = MaterialStore.registerSuffix("chest", new MaterialSuffixDefinition<>(
+            ChestMaterialHelper::getDefaultMaterial
+    ));
+
     @Override
     MapCodec<? extends IChestMaterial> codec();
 
